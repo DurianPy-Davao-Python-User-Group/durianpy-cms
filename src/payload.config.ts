@@ -59,6 +59,14 @@ export default buildConfig({
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
+    connectOptions: {
+      tls: true,
+      authMechanism: 'SCRAM-SHA-256',
+      serverSelectionTimeoutMS: 60000,
+      connectTimeoutMS: 60000,
+      socketTimeoutMS: 60000,
+      family: 4,
+    },
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

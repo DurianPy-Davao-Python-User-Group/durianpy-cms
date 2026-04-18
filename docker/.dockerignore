@@ -1,0 +1,15 @@
+**/.git
+**/.cursor
+**/.vscode/
+**/.next/
+
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnpm-store
+dist
+build
+.env
+.env.*
+
+docker/
