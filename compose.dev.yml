@@ -8,6 +8,11 @@ services:
         PAYLOAD_SECRET: ${PAYLOAD_SECRET}
     ports:
       - '3000:3000'
+    environment:
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS}
     develop:
       watch:
         - path: ./src
