@@ -1,0 +1,19 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+ARG DATABASE_URL
+ARG PAYLOAD_SECRET
+
+COPY package.json package-lock.json ./
+
+RUN npm install --legacy-peer-deps
+
+COPY . .
+
+ENV DATABASE_URL=${DATABASE_URL}
+ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
