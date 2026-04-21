@@ -419,7 +419,16 @@ export interface Category {
  */
 export interface User {
   id: string;
-  name?: string | null;
+  firstName: string;
+  lastName: string;
+  role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
+  allowedCollections?:
+    | {
+        collectionSlug: 'pages' | 'posts' | 'categories' | 'media' | 'users';
+        permissions: 'read' | 'read-write' | 'full-access';
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1338,7 +1347,16 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  name?: T;
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  allowedCollections?:
+    | T
+    | {
+        collectionSlug?: T;
+        permissions?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;

@@ -1,0 +1,32 @@
+import { ACCESS_TYPES, AccessType } from './accessTypes'
+
+export const COLLECTION_PERMISSIONS = {
+  READ: 'read',
+  READ_WRITE: 'read-write',
+  FULL_ACCESS: 'full-access',
+} as const
+
+export type CollectionPermission =
+  (typeof COLLECTION_PERMISSIONS)[keyof typeof COLLECTION_PERMISSIONS]
+
+export const COLLECTION_PERMISSION_LABELS: Record<CollectionPermission, string> = {
+  [COLLECTION_PERMISSIONS.READ]: 'Read',
+  [COLLECTION_PERMISSIONS.READ_WRITE]: 'Read & Write',
+  [COLLECTION_PERMISSIONS.FULL_ACCESS]: 'Full Access',
+}
+
+export const COLLECTION_PERMISSION_TO_ACCESS_TYPES: Record<CollectionPermission, AccessType[]> = {
+  [COLLECTION_PERMISSIONS.READ]: [ACCESS_TYPES.READ],
+  [COLLECTION_PERMISSIONS.READ_WRITE]: [
+    ACCESS_TYPES.READ,
+    ACCESS_TYPES.CREATE,
+    ACCESS_TYPES.UPDATE,
+  ],
+  [COLLECTION_PERMISSIONS.FULL_ACCESS]: [
+    ACCESS_TYPES.ADMIN,
+    ACCESS_TYPES.CREATE,
+    ACCESS_TYPES.DELETE,
+    ACCESS_TYPES.READ,
+    ACCESS_TYPES.UPDATE,
+  ],
+}
