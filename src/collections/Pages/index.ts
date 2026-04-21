@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { AccessArgs, CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
@@ -20,14 +20,20 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { checkCollectionAccess } from '@/access/checkCollectionAccess'
+import { AccessType } from '@/constants/accessTypes'
+
+const checkPostAccess = (accessType?: AccessType) => (access: AccessArgs) =>
+  checkCollectionAccess(access, 'pages', accessType)
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
+    admin: checkPostAccess('admin'),
+    create: checkPostAccess('create'),
+    delete: checkPostAccess('delete'),
+    read: checkPostAccess('read'),
+    update: checkPostAccess('update'),
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -53,6 +59,9 @@ export const Pages: CollectionConfig<'pages'> = {
         req,
       }),
     useAsTitle: 'title',
+    hidden({ user }) {
+      return !checkPostAccess('read')({ req: { user } } as AccessArgs)
+    },
   },
   fields: [
     {
