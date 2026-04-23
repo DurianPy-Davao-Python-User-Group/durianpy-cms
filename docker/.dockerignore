@@ -2,6 +2,7 @@
 **/.cursor
 **/.vscode/
 **/.next/
+**/.devcontainer/
 
 node_modules/
 npm-debug.log

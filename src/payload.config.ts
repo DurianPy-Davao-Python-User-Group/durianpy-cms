@@ -57,30 +57,34 @@ export default buildConfig({
       ],
     },
   },
-  email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'durianpy.davao@gmail.com',
-    defaultFromName: 'DurianPy CMS',
-    transportOptions: {
-      host: process.env.SMTP_HOST,
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+  ...(process.env.ENVIRONMENT !== 'development' && {
+    email: nodemailerAdapter({
+      defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'durianpy.davao@gmail.com',
+      defaultFromName: 'DurianPy CMS',
+      transportOptions: {
+        host: process.env.SMTP_HOST,
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
       },
-    },
+    }),
   }),
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
-    connectOptions: {
-      tls: true,
-      authMechanism: 'SCRAM-SHA-256',
-      serverSelectionTimeoutMS: 60000,
-      connectTimeoutMS: 60000,
-      socketTimeoutMS: 60000,
-      family: 4,
-    },
+    ...(process.env.ENVIRONMENT !== 'development' && {
+      connectOptions: {
+        tls: true,
+        authMechanism: 'SCRAM-SHA-256',
+        serverSelectionTimeoutMS: 60000,
+        connectTimeoutMS: 60000,
+        socketTimeoutMS: 60000,
+        family: 4,
+      },
+    }),
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

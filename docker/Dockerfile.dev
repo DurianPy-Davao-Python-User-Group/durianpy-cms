@@ -1,18 +1,18 @@
 FROM node:24-alpine
 
+RUN apk add --no-cache libc6-compat git bash curl
+
 WORKDIR /app
 
-ARG DATABASE_URL
-ARG PAYLOAD_SECRET
+RUN chown node:node /app
 
-COPY package.json package-lock.json ./
+USER node
+
+COPY --chown=node:node package.json package-lock.json ./
 
 RUN npm install --legacy-peer-deps
 
-COPY . .
-
-ENV DATABASE_URL=${DATABASE_URL}
-ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
+COPY --chown=node:node . .
 
 EXPOSE 3000
 
