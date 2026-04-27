@@ -22,6 +22,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { checkCollectionAccess } from '@/access/checkCollectionAccess'
 import { AccessType } from '@/constants/accessTypes'
+import { anyone } from '@/access/anyone'
 
 const checkPostAccess = (accessType?: AccessType) => (access: AccessArgs) =>
   checkCollectionAccess(access, 'pages', accessType)
@@ -32,7 +33,7 @@ export const Pages: CollectionConfig<'pages'> = {
     admin: checkPostAccess('admin'),
     create: checkPostAccess('create'),
     delete: checkPostAccess('delete'),
-    read: checkPostAccess('read'),
+    read: anyone,
     update: checkPostAccess('update'),
   },
   // This config controls what's populated by default when a page is referenced

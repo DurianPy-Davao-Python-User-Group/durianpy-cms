@@ -23,6 +23,25 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Declare Build Arguments
+ARG DATABASE_URL
+ARG PAYLOAD_SECRET
+ARG NEXT_PUBLIC_SERVER_URL
+ARG SMTP_HOST
+ARG SMTP_USER
+ARG SMTP_PASS
+ARG SMTP_FROM_ADDRESS
+
+# Set Environment Variables for the Build
+ENV DATABASE_URL=$DATABASE_URL
+ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+ENV SMTP_HOST=$SMTP_HOST
+ENV SMTP_USER=$SMTP_USER
+ENV SMTP_PASS=$SMTP_PASS
+ENV SMTP_FROM_ADDRESS=$SMTP_FROM_ADDRESS
+ENV NODE_ENV=production
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
