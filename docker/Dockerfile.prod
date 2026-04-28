@@ -4,22 +4,22 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN npm ci
+COPY package.json package-lock.json ./
+RUN if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi
 
 FROM base AS builder
 WORKDIR /app
-ARG DATABASE_URL
-ARG PAYLOAD_SECRET
-
-ENV DATABASE_URL=$DATABASE_URL
-ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
-ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+ENV NODE_ENV=production
+
+RUN --mount=type=secret,id=payload_secret \
+    --mount=type=secret,id=database_url \
+    PAYLOAD_SECRET=$(cat /run/secrets/payload_secret) \
+    DATABASE_URL=$(cat /run/secrets/database_url) \
+    npm run build
 
 FROM base AS runner
 WORKDIR /app
