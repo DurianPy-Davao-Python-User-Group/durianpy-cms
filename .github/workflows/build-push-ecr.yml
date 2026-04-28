@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write # Required for requesting the JWT for OIDC
-  contents: read # Required for checkout
+  id-token: write
+  contents: read
 
 jobs:
   build-and-push:
@@ -21,11 +21,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Run Lint
         run: npm run lint
@@ -36,7 +36,6 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # Use the 'cms_ci_role_arn' output from your Terraform apply
           role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
           aws-region: ap-southeast-1
 
@@ -44,24 +43,28 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Fetch Secrets and Config from AWS
+      - name: Fetch Secrets from AWS
         id: secrets
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
             APP, durianpy-cms-app-secrets-prod
+          parse-json-secrets: true
 
       - name: Build, Tag, and Push Image to ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: durianpy-cms-prod
           IMAGE_TAG: ${{ github.sha }}
+          PAYLOAD_SECRET: ${{ env.APP_PAYLOAD_SECRET }}
+          DATABASE_URL: ${{ env.APP_DATABASE_URL }}
         run: |
-          # Use values from Secrets Manager as Build Args
-          docker build \
-            --build-arg PUBLIC_SERVER_URL=${{ env.INFRA_PUBLIC_SERVER_URL }} \
-            --build-arg DATABASE_URL=${{ env.DATABASE_URL }} \
-            --build-arg PAYLOAD_SECRET=${{ env.PAYLOAD_SECRET }} \
+          export DOCKER_BUILDKIT=1
+
+          docker build --no-cache \
+            --secret id=payload_secret,env=PAYLOAD_SECRET \
+            --secret id=database_url,env=DATABASE_URL \
+            -f docker/Dockerfile.prod \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
 
