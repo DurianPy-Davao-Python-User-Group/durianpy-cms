@@ -20,6 +20,10 @@ import { getServerSideURL } from './utilities/getURL'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const hasSmtpConfig = Boolean(
+  process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
+)
+
 export default buildConfig({
   admin: {
     components: {
@@ -57,21 +61,22 @@ export default buildConfig({
       ],
     },
   },
-  ...(process.env.ENVIRONMENT !== 'development' && {
-    email: nodemailerAdapter({
-      defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'durianpy.davao@gmail.com',
-      defaultFromName: 'DurianPy CMS',
-      transportOptions: {
-        host: process.env.SMTP_HOST,
-        port: 465,
-        secure: true,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
+  ...(process.env.ENVIRONMENT !== 'development' &&
+    hasSmtpConfig && {
+      email: nodemailerAdapter({
+        defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'durianpy.davao@gmail.com',
+        defaultFromName: 'DurianPy CMS',
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: 465,
+          secure: true,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
         },
-      },
+      }),
     }),
-  }),
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
