@@ -18,7 +18,7 @@ const WelcomeEmail: FC<{ firstName: string }> = ({ firstName }) => {
         To get started, please contact the DurianPy CMS support team to receive your password and
         complete your account setup.
       </p>
-      <p>If you have any questions, feel free to reach out to us. We're here to help!</p>
+      <p>{`If you have any questions, feel free to reach out to us. We're here to help!`}</p>
       <p>
         Best regards,
         <br />
