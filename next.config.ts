@@ -40,6 +40,9 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+  experimental: {
+    isrFlushToDisk: false,
+  },
   reactStrictMode: true,
   redirects,
   turbopack: {
