@@ -56,13 +56,13 @@ ENV PORT=3000
 ENV AWS_LAMBDA_WEB_ADAPTER_PORT=3000
 ENV PARAMETERS_SECRETS_EXTENSION_HTTP_PORT=2773
 ENV SECRETS_MANAGER_TTL=300
-ENV NEXT_CACHE_HANDLER_PATH="/app/cache-handler.js"
+ENV NEXT_CACHE_HANDLER_PATH="/app/cache-handler.mjs"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY docker/lambda/entrypoint.mjs .
-COPY docker/lambda/cache-handler.js .
+COPY docker/lambda/cache-handler.mjs .
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
