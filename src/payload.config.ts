@@ -100,7 +100,26 @@ export default buildConfig({
     }),
   }),
   collections: [Pages, Posts, Media, Categories, Users],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: [getServerSideURL()]
+    .filter(Boolean)
+    .map((url) => {
+      try {
+        const { origin } = new URL(url!)
+        return origin
+      } catch (e) {
+        return url!
+      }
+    }),
+  csrf: [getServerSideURL()]
+    .filter(Boolean)
+    .map((url) => {
+      try {
+        const { origin } = new URL(url!)
+        return origin
+      } catch (e) {
+        return url!
+      }
+    }),
   globals: [Header, Footer],
   plugins: [
     ...plugins,

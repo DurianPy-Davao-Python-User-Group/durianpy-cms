@@ -52,7 +52,12 @@ export const Users: CollectionConfig = {
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
   },
-  auth: true,
+  auth: {
+    cookies: {
+      secure: true,
+      sameSite: 'None',
+    },
+  },
   fields: [
     {
       type: 'row',
