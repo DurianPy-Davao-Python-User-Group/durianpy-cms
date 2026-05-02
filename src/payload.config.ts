@@ -28,6 +28,11 @@ const hasSmtpConfig = Boolean(
 )
 
 export default buildConfig({
+  serverURL: getServerSideURL(),
+  routes: {
+    admin: isProduction ? '/prod/admin' : '/admin',
+    api: isProduction ? '/prod/api' : '/api',
+  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -119,6 +124,11 @@ export default buildConfig({
         ]
       : []),
   ],
+  upload: {
+    limits: {
+      fileSize: 50000000, // 50MB
+    },
+  },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
