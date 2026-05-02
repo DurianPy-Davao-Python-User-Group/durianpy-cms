@@ -37,8 +37,10 @@ ENV NODE_ENV=production
 
 RUN --mount=type=secret,id=payload_secret \
     --mount=type=secret,id=database_url \
+    --mount=type=secret,id=cloudfront_domain \
     PAYLOAD_SECRET=$(cat /run/secrets/payload_secret) \
     DATABASE_URL=$(cat /run/secrets/database_url) \
+    CLOUDFRONT_DISTRIBUTION_DOMAIN=$(cat /run/secrets/cloudfront_domain) \
     npm run build
 
 # Step 4: Final image for Lambda

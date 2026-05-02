@@ -5,6 +5,7 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
@@ -19,6 +20,8 @@ import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const isProduction = process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
 
 const hasSmtpConfig = Boolean(
   process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
@@ -61,7 +64,7 @@ export default buildConfig({
       ],
     },
   },
-  ...(process.env.ENVIRONMENT !== 'development' &&
+  ...(isProduction &&
     hasSmtpConfig && {
       email: nodemailerAdapter({
         defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'durianpy.davao@gmail.com',
@@ -80,7 +83,7 @@ export default buildConfig({
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
-    ...(process.env.ENVIRONMENT !== 'development' && {
+    ...(isProduction && {
       connectOptions: {
         tls: true,
         authMechanism: 'SCRAM-SHA-256',
@@ -94,7 +97,28 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
-  plugins,
+  plugins: [
+    ...plugins,
+    ...(isProduction && process.env.S3_BUCKET
+      ? [
+          s3Storage({
+            collections: {
+              media: {
+                generateFileURL: ({ filename, prefix }) => {
+                  return `https://${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/${prefix}/${filename}`
+                },
+                prefix: 'media',
+              },
+            },
+            bucket: process.env.S3_BUCKET,
+            config: {
+              region: process.env.S3_REGION || 'ap-southeast-1',
+            },
+            enabled: true,
+          }),
+        ]
+      : []),
+  ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
