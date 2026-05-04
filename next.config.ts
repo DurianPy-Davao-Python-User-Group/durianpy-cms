@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   ...(isProduction && {
     assetPrefix: process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
-      ? `https://${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}`
+      ? process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
       : undefined,
   }),
   images: {
@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
       ...[
         NEXT_PUBLIC_SERVER_URL,
         process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
-          ? `https://${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}`
+          ? process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
           : null,
       ]
         .filter(Boolean)

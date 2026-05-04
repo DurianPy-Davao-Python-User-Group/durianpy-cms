@@ -123,13 +123,13 @@ export default buildConfig({
   globals: [Header, Footer],
   plugins: [
     ...plugins,
-    ...(isProduction && process.env.S3_BUCKET
+    ...(process.env.S3_BUCKET
       ? [
           s3Storage({
             collections: {
               media: {
                 generateFileURL: ({ filename, prefix }) => {
-                  return `https://${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/${prefix}/${filename}`
+                  return `${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/${prefix}/${filename}`
                 },
                 prefix: 'media',
               },
@@ -138,7 +138,7 @@ export default buildConfig({
             config: {
               region: process.env.S3_REGION || 'ap-southeast-1',
             },
-            enabled: true,
+            enabled: isProduction,
           }),
         ]
       : []),
