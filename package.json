@@ -25,6 +25,7 @@
     "picomatch": "^2.3.2 || ^4.0.4"
   },
   "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.1043.0",
     "@payloadcms/admin-bar": "3.82.1",
     "@payloadcms/db-mongodb": "3.82.1",
     "@payloadcms/email-nodemailer": "3.82.1",
