@@ -166,9 +166,9 @@ jobs:
             echo "No high/critical vulnerabilities found." >> $GITHUB_STEP_SUMMARY
           fi
 
-      # - name: Deploy to AWS Lambda
-      #   if: success()
-      #   run: |
-      #     aws lambda update-function-code \
-      #       --function-name durianpy-cms-prod \
-      #       --image-uri ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}
+      - name: Deploy to AWS Lambda
+        if: success()
+        run: |
+          aws lambda update-function-code \
+            --function-name durianpy-cms-prod \
+            --image-uri ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}
