@@ -39,9 +39,13 @@ ENV ENVIRONMENT=production
 RUN --mount=type=secret,id=payload_secret \
     --mount=type=secret,id=database_url \
     --mount=type=secret,id=cloudfront_domain \
+    --mount=type=secret,id=s3_bucket \
+    --mount=type=secret,id=next_public_server_url \
     export PAYLOAD_SECRET=$(cat /run/secrets/payload_secret) && \
     export DATABASE_URL=$(cat /run/secrets/database_url) && \
     export CLOUDFRONT_DISTRIBUTION_DOMAIN=$(cat /run/secrets/cloudfront_domain) && \
+    export S3_BUCKET=$(cat /run/secrets/s3_bucket) && \
+    export NEXT_PUBLIC_SERVER_URL=$(cat /run/secrets/next_public_server_url) && \
     npm run generate:importmap && npm run build
 
 # Step 4: Final image for Lambda

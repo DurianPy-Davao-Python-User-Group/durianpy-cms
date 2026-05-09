@@ -16,7 +16,7 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
-import { getServerSideURL } from './utilities/getURL'
+import { getServerSideURL, getServerSideOrigin } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,7 +28,7 @@ const hasSmtpConfig = Boolean(
 )
 
 export default buildConfig({
-  serverURL: getServerSideURL(),
+  serverURL: getServerSideOrigin(),
   routes: {
     admin: '/admin',
     api: '/api',
@@ -100,7 +100,7 @@ export default buildConfig({
     }),
   }),
   collections: [Pages, Posts, Media, Categories, Users],
-  cors: [getServerSideURL()]
+  cors: [getServerSideOrigin()]
     .filter(Boolean)
     .map((url) => {
       try {
@@ -110,7 +110,7 @@ export default buildConfig({
         return url!
       }
     }),
-  csrf: [getServerSideURL()]
+  csrf: [getServerSideOrigin()]
     .filter(Boolean)
     .map((url) => {
       try {
