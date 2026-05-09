@@ -42,7 +42,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    staticDir: isProduction ? `${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/media` : path.resolve(dirname, '../../public/media'),
+    staticDir: isProduction ? '/tmp/media' : path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
