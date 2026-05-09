@@ -32,13 +32,13 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   ...(isProduction && {
     assetPrefix: process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
-      ? process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
+      ? `${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}${basePath || ''}`
       : undefined,
   }),
   images: {
     localPatterns: [
       {
-        pathname: '/api/media/file/**',
+        pathname: `${basePath || ''}/api/media/file/**`,
       },
     ],
     qualities: [100],

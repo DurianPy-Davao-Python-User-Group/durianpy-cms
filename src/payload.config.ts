@@ -28,10 +28,12 @@ const hasSmtpConfig = Boolean(
 )
 
 export default buildConfig({
-  serverURL: getServerSideOrigin(),
+  serverURL: getServerSideURL(),
   routes: {
     admin: '/admin',
     api: '/api',
+    graphQL: '/api/graphql',
+    graphQLPlayground: '/api/graphql-playground',
   },
   admin: {
     components: {
