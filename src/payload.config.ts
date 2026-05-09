@@ -30,8 +30,8 @@ const hasSmtpConfig = Boolean(
 export default buildConfig({
   serverURL: getServerSideURL(),
   routes: {
-    admin: isProduction ? '/prod/admin' : '/admin',
-    api: isProduction ? '/prod/api' : '/api',
+    admin: '/admin',
+    api: '/api',
   },
   admin: {
     components: {
