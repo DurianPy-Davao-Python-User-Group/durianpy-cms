@@ -128,13 +128,18 @@ export default buildConfig({
           s3Storage({
             collections: {
               media: {
+                disableLocalStorage: true,
                 generateFileURL: ({ filename, prefix }) => {
-                  return `${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/${prefix}/${filename}`
+                  const domain = process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
+                  if (!domain) return filename
+                  const normalizedDomain = domain.replace(/\/$/, '')
+                  const protocol = normalizedDomain.startsWith('http') ? '' : 'https://'
+                  return `${protocol}${normalizedDomain}/${prefix}/${filename}`
                 },
                 prefix: 'media',
               },
             },
-            bucket: process.env.S3_BUCKET,
+            bucket: process.env.S3_BUCKET || '',
             config: {
               region: process.env.AWS_REGION || 'ap-southeast-1',
             },

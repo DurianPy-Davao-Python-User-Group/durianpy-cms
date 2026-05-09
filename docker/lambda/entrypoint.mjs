@@ -33,6 +33,8 @@ async function fetchSecrets() {
       process.env.SMTP_USER = secrets.SMTP_USER
       process.env.SMTP_PASS = secrets.SMTP_PASS
       process.env.SMTP_FROM_ADDRESS = secrets.SMTP_FROM_ADDRESS
+      process.env.S3_BUCKET = secrets.S3_BUCKET
+      process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN = secrets.CLOUDFRONT_DISTRIBUTION_DOMAIN
 
       console.log('Secrets successfully injected into environment.')
       return
