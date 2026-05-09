@@ -1,18 +1,10 @@
 # Step 1: Lambda Layer Builder
 FROM alpine AS layer-builder
-RUN apk add --no-cache curl unzip aws-cli
+RUN apk add --no-cache curl unzip
 
-RUN --mount=type=secret,id=AWS_ACCESS_KEY_ID \
-    --mount=type=secret,id=AWS_SECRET_ACCESS_KEY \
-    --mount=type=secret,id=AWS_SESSION_TOKEN \
-    export AWS_ACCESS_KEY_ID=$(cat /run/secrets/AWS_ACCESS_KEY_ID) && \
-    export AWS_SECRET_ACCESS_KEY=$(cat /run/secrets/AWS_SECRET_ACCESS_KEY) && \
-    export AWS_SESSION_TOKEN=$(cat /run/secrets/AWS_SESSION_TOKEN) && \
-    export AWS_DEFAULT_REGION=ap-southeast-1 && \
-    curl $(aws lambda get-layer-version-by-arn \
-    --arn arn:aws:lambda:ap-southeast-1:044395824272:layer:AWS-Parameters-and-Secrets-Lambda-Extension:61 \
-    --query 'Content.Location' --output text) \
-    --output layer.zip && \
+ARG LAYER_URL
+RUN if [ -z "$LAYER_URL" ]; then echo "LAYER_URL build-arg is required" && exit 1; fi && \
+    curl "$LAYER_URL" --output layer.zip && \
     unzip layer.zip -d /opt-layer && \
     rm layer.zip
 
@@ -46,7 +38,7 @@ RUN --mount=type=secret,id=payload_secret \
     export CLOUDFRONT_DISTRIBUTION_DOMAIN=$(cat /run/secrets/cloudfront_domain) && \
     export S3_BUCKET=$(cat /run/secrets/s3_bucket) && \
     export NEXT_PUBLIC_SERVER_URL=$(cat /run/secrets/next_public_server_url) && \
-    npm run generate:importmap && npm run build
+    NEXT_PUBLIC_SERVER_URL="" npm run generate:importmap && npm run build
 
 # Step 4: Final image for Lambda
 FROM base AS runner
