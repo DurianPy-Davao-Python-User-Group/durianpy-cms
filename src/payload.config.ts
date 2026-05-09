@@ -1,6 +1,5 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2'
 import nodemailer from 'nodemailer'
 
 import sharp from 'sharp'
@@ -22,10 +21,6 @@ import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-const sesClient = new SESv2Client({
-  region: process.env.AWS_REGION || 'ap-southeast-1',
-})
 
 const isProduction = process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
 
@@ -80,12 +75,15 @@ export default buildConfig({
       email: nodemailerAdapter({
         defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'durianpy.davao@gmail.com',
         defaultFromName: 'DurianPy CMS',
-        transport: nodemailer.createTransport({
-          SES: {
-            sesClient,
-            SendEmailCommand
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT) || 587,
+          secure: process.env.SMTP_SECURE === 'true',
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
           },
-        }),
+        }
       }),
     }),
   editor: defaultLexical,
