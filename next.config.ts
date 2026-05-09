@@ -13,32 +13,17 @@ const NEXT_PUBLIC_SERVER_URL =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000')
 
-const getBasePath = (url: string) => {
-  try {
-    const { pathname } = new URL(url)
-    if (pathname && pathname !== '/') {
-      return pathname.replace(/\/$/, '')
-    }
-  } catch (e) {}
-  return undefined
-}
-
-const basePath = getBasePath(NEXT_PUBLIC_SERVER_URL)
-
 const isProduction = process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
 
 const nextConfig: NextConfig = {
-  basePath,
   output: 'standalone',
   ...(isProduction && {
-    assetPrefix: process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN
-      ? `${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}${basePath || ''}`
-      : undefined,
+    assetPrefix: process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN || undefined,
   }),
   images: {
     localPatterns: [
       {
-        pathname: `${basePath || ''}/api/media/file/**`,
+        pathname: '/api/media/file/**',
       },
     ],
     qualities: [100],
@@ -59,6 +44,18 @@ const nextConfig: NextConfig = {
           }
         }),
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/prod',
+        destination: '/',
+      },
+      {
+        source: '/prod/:path*',
+        destination: '/:path*',
+      },
+    ]
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
