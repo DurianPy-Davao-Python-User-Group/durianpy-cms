@@ -30,10 +30,10 @@ const hasSmtpConfig = Boolean(
 export default buildConfig({
   serverURL: getServerSideURL(),
   routes: {
-    admin: '/admin',
-    api: '/api',
-    graphQL: '/api/graphql',
-    graphQLPlayground: '/api/graphql-playground',
+    admin: isProduction ? '/prod/admin' : '/admin',
+    api: isProduction ? '/prod/api' : '/api',
+    graphQL: isProduction ? '/prod/api/graphql' : '/api/graphql',
+    graphQLPlayground: isProduction ? '/prod/api/graphql-playground' : '/api/graphql-playground',
   },
   admin: {
     components: {
