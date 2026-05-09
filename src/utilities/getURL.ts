@@ -9,6 +9,16 @@ export const getServerSideURL = () => {
   )
 }
 
+export const getServerSideOrigin = () => {
+  const url = getServerSideURL()
+  try {
+    const { origin } = new URL(url)
+    return origin
+  } catch (e) {
+    return url
+  }
+}
+
 export const getClientSideURL = () => {
   if (process.env.NEXT_PUBLIC_SERVER_URL) {
     return process.env.NEXT_PUBLIC_SERVER_URL
