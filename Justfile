@@ -1,6 +1,7 @@
 set dotenv-load
 
 aws-profile := "default"
+environment := "development"
 aws-region  := "ap-southeast-1"
 GIT_SHA     := `git rev-parse HEAD`
 
@@ -46,6 +47,11 @@ build-lambda-image-ecr: check-session
     docker tag durianpy-cms-prod:latest $REPO_URI:{{GIT_SHA}}; \
     docker push $REPO_URI:{{GIT_SHA}}; \
     echo "✅ Success! Assets in S3 and Image in ECR ({{GIT_SHA}})"
+
+get-secrets: check-session
+    @echo "🔑 Fetching secrets..."
+    @aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:ap-southeast-1:193672753403:secret:durianpy-cms-app-secrets-prod-bPi7wt --query SecretString --output text --profile {{aws-profile}} --region {{aws-region}} | jq -r 'to_entries[] | "\(.key)=\(.value)"' > .env
+    echo "✅ Secrets saved to .env file"
 
 up-dev:
   docker compose -f compose.dev.yml up --watch
