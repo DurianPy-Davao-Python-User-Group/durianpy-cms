@@ -132,7 +132,7 @@ export default buildConfig({
                   const protocol = normalizedDomain.startsWith('http') ? '' : 'https://'
                   return `${protocol}${normalizedDomain}/${prefix}/${filename}`
                 },
-                prefix: 'public/media',
+                prefix: 'media',
               },
             },
             bucket: process.env.S3_BUCKET || '',
@@ -148,6 +148,9 @@ export default buildConfig({
     limits: {
       fileSize: 50000000, // 50MB
     },
+    useTempFiles: false,
+    tempFileDir: '/tmp',
+    debug: true,
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
