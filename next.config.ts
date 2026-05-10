@@ -45,18 +45,6 @@ const nextConfig: NextConfig = {
         }),
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/prod',
-        destination: '/',
-      },
-      {
-        source: '/prod/:path*',
-        destination: '/:path*',
-      },
-    ]
-  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

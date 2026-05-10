@@ -29,12 +29,6 @@ const hasSmtpConfig = Boolean(
 
 export default buildConfig({
   serverURL: getServerSideURL(),
-  routes: {
-    admin: isProduction ? '/prod/admin' : '/admin',
-    api: isProduction ? '/prod/api' : '/api',
-    graphQL: isProduction ? '/prod/api/graphql' : '/api/graphql',
-    graphQLPlayground: isProduction ? '/prod/api/graphql-playground' : '/api/graphql-playground',
-  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -138,7 +132,7 @@ export default buildConfig({
                   const protocol = normalizedDomain.startsWith('http') ? '' : 'https://'
                   return `${protocol}${normalizedDomain}/${prefix}/${filename}`
                 },
-                prefix: 'media',
+                prefix: 'public/media',
               },
             },
             bucket: process.env.S3_BUCKET || '',
