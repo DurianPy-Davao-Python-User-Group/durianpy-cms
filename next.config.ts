@@ -18,7 +18,7 @@ const isProduction = process.env.NODE_ENV === 'production' || process.env.ENVIRO
 const nextConfig: NextConfig = {
   output: 'standalone',
   ...(isProduction && {
-    assetPrefix: process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN || undefined,
+    assetPrefix: `${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/artifacts` || undefined,
   }),
   images: {
     localPatterns: [
@@ -54,6 +54,7 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+  serverExternalPackages: ['sharp', 'mongodb', 'mongoose', 'image-size', 'file-type', 'busboy'],
   experimental: {
     isrFlushToDisk: false,
   },
