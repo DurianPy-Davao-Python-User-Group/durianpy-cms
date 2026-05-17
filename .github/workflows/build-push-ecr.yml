@@ -38,7 +38,6 @@ jobs:
           secret: /durianpy/cms/prod/
           with-decryption: true
           mask-values: true
-          transform-keys: true
           recursive: true
 
       - name: Install Project Dependencies
@@ -106,7 +105,6 @@ jobs:
           secret: /durianpy/cms/prod/
           with-decryption: true
           mask-values: true
-          transform-keys: true
           recursive: true
 
       - name: Install Dependencies and Build
