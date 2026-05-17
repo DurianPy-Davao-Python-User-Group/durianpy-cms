@@ -50,7 +50,7 @@ build-lambda-image-ecr: check-session
 
 get-secrets: check-session
     @echo "🔑 Fetching secrets..."
-    @aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:ap-southeast-1:193672753403:secret:durianpy-cms-app-secrets-prod-bPi7wt --query SecretString --output text --profile {{aws-profile}} --region {{aws-region}} | jq -r 'to_entries[] | "\(.key)=\(.value)"' > .env
+    @aws ssm get-parameters-by-path --path /durianpy/cms/prod/ --with-decryption --region {{aws-region}} --profile {{aws-profile}} --query "Parameters[].[Name, Value]" --output text | sed 's/\/durianpy\/cms\/prod\///g' | tr '\t' '=' > .env
     echo "✅ Secrets saved to .env file"
 
 up-dev:
