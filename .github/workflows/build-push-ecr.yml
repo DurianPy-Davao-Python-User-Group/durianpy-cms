@@ -35,10 +35,11 @@ jobs:
         uses: Armadillidiid/ssm-get-parameters-action@v1
         with:
           by-path: true
-          secret: /durianpy/cms/prod
+          secret: /durianpy/cms/prod/
           with-decryption: true
           mask-values: true
-          transform-keys: true # Added here for consistency with your integration tests
+          transform-keys: true
+          recursive: true
 
       - name: Install Project Dependencies
         run: npm ci --legacy-peer-deps
@@ -102,10 +103,11 @@ jobs:
         uses: Armadillidiid/ssm-get-parameters-action@v1
         with:
           by-path: true
-          secret: /durianpy/cms/prod
+          secret: /durianpy/cms/prod/
           with-decryption: true
           mask-values: true
           transform-keys: true
+          recursive: true
 
       - name: Install Dependencies and Build
         env:
