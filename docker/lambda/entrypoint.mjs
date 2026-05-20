@@ -9,6 +9,7 @@ const ENV_VARIABLES = [
   'SMTP_FROM_ADDRESS',
   'S3_BUCKET',
   'CLOUDFRONT_DISTRIBUTION_DOMAIN',
+  'NEXT_PUBLIC_SERVER_URL',
 ]
 
 async function fetchSingleParameter(env_variable) {
@@ -17,7 +18,7 @@ async function fetchSingleParameter(env_variable) {
   const PARAMETER_STORE_PREFIX = process.env.PARAMETER_STORE_PREFIX || '/durianpy/cms/prod'
 
   const parameterPath = `${PARAMETER_STORE_PREFIX}/${env_variable}`
-  const url = `http://localhost:${PORT}/systemsmanager/parameters/get?name=${encodeURIComponent(parameterPath)}`
+  const url = `http://localhost:${PORT}/systemsmanager/parameters/get?name=${encodeURIComponent(parameterPath)}&withDecryption=true`
 
   const headers = {
     'X-Aws-Parameters-Secrets-Token': SESSION_TOKEN,
