@@ -1,11 +1,12 @@
 # Adding a New Collection
 
-Follow these steps to add a new collection to the CMS. 
+Follow these steps to add a new collection to the CMS.
 
 ### 1. Create the configuration
+
 Create a new directory in `src/collections/` and an `index.ts` file inside it (e.g., `src/collections/Products/index.ts`).
 
-*For a consistent style, refer to `src/collections/Posts/index.ts`.*
+_For a consistent style, refer to `src/collections/Posts/index.ts`._
 
 ```typescript
 import type { CollectionConfig } from 'payload'
@@ -34,6 +35,7 @@ export const Products: CollectionConfig = {
 ```
 
 ### 2. Register the collection
+
 Import your collection in `src/payload.config.ts` and add it to the `collections` array.
 
 ```typescript
@@ -52,3 +54,7 @@ export default buildConfig({
   // ...
 })
 ```
+
+### 3. Update the collection-related types and constants
+
+Update the enums and types accordingly in `src/constants/collections.ts`
