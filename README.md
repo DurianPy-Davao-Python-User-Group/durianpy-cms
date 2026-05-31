@@ -52,18 +52,20 @@ We strictly follow [Conventional Commits](https://www.conventionalcommits.org/).
 
 ### 🔄 Staying Synchronized
 
-Always rebase your branch from `main` before pushing:
+Keep your branch updated with `main`:
 
 ```bash
 git fetch origin
 git rebase origin/main -r
 ```
 
-### 📋 Pull Requests
+### 📋 Git Lifecycle Summary
 
-1. Push your branch: `git push --set-upstream origin <branch-name>`
-2. Create a PR on GitHub using the provided **PR Template**.
-3. Ensure all pre-commit hooks (ESLint, Prettier, Gitleaks) pass.
+1. **Ticket**: Get assigned to a task.
+2. **Branch**: `git checkout -b <type>/<ticket-id>-title`.
+3. **Setup**: `npm i && npx prek install --hook-type pre-commit --hook-type commit-msg --prepare-hooks`.
+4. **Code**: Implement changes & follow [Conventional Commits](https://www.conventionalcommits.org/).
+5. **PR**: Push and create a Pull Request on GitHub.
 
 ---
 
