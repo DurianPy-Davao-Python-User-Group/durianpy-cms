@@ -1,6 +1,23 @@
 # Developer Workflow: Feature to Production
 
-This guide outlines the standard lifecycle for developing a new feature (like adding a collection) and pushing it to production.
+This guide outlines the standard lifecycle for developing a new feature and pushing it to production.
+
+---
+
+## 🚦 Git Lifecycle
+
+All contributors must follow this sequence for every task:
+
+1.  **Ticket Assignment**: Ensure you are assigned to a ticket in GitHub Projects/Jira.
+2.  **Branch Creation**: Create a new branch from `main` using the naming convention: `<type>/<ticket-id>-task-title`.
+3.  **Environment Setup**: Once in your branch (and inside the DevContainer), prepare your environment:
+    ```bash
+    npm i && npx prek install --hook-type pre-commit --hook-type commit-msg --prepare-hooks
+    ```
+4.  **Implementation**: Create your changes (Schema, Seeders, Logic).
+5.  **Syncing**: Periodically rebase from `main` to resolve conflicts early: `git fetch origin && git rebase origin/main -r`.
+6.  **Committing**: Commit your changes using [Conventional Commits](https://www.conventionalcommits.org/).
+7.  **Pull Request**: Push your branch and create a PR using the repository template.
 
 ---
 

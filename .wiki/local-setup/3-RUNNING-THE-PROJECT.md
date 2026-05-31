@@ -2,10 +2,12 @@
 
 Once your IDE is connected to the DevContainer, open an integrated terminal.
 
-### 1. Install Dependencies
+### 1. Prepare Development Environment
+
+Run the following command to install dependencies and initialize all required Git hooks (Prettier, ESLint, Commitizen, etc.) in one step:
 
 ```bash
-npm install
+npm i && npx prek install --hook-type pre-commit --hook-type commit-msg --prepare-hooks
 ```
 
 ### 2. Start the Development Server
