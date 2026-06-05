@@ -9,6 +9,7 @@ export default function Page() {
 
   return (
     <div>
+      <div dangerouslySetInnerHTML={{ __html: template }} />
       <h1>Test Page</h1>
     </div>
   )

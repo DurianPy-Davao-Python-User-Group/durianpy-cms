@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyAdmin } from '@/access/anyAdmin'
 import { USER_ROLE_LABELS, USER_ROLES } from '@/constants/userRoles'
-import { COLLECTION_LABELS, COLLECTIONS } from '@/constants/collections'
+import { COLLECTION_FOR_PERMISSION_OPTIONS, getCollectionGroupLabel } from '@/constants/collections'
 import WelcomeEmail from '@/email/templates/WelcomeEmail'
 import type { CollectionAfterChangeHook } from 'payload'
 import type { User } from '@/payload-types'
@@ -9,7 +9,6 @@ import {
   COLLECTION_PERMISSION_LABELS,
   COLLECTION_PERMISSIONS,
 } from '@/constants/collectionPermissions'
-import { authenticated } from '@/access/authenticated'
 import { adminOrSelf } from '@/access/adminOrSelf'
 
 const sendEmailOnUserCreate: CollectionAfterChangeHook<User> = ({ doc, operation, req }) => {
@@ -38,7 +37,7 @@ export const Users: CollectionConfig = {
     },
     create: anyAdmin,
     delete: anyAdmin,
-    read: authenticated,
+    read: adminOrSelf,
     update: adminOrSelf,
   },
   hooks: {
@@ -51,6 +50,7 @@ export const Users: CollectionConfig = {
       if (!user) return true
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
+    group: getCollectionGroupLabel('durianpy-website'),
   },
   auth: {
     cookies: {
@@ -66,19 +66,11 @@ export const Users: CollectionConfig = {
           name: 'firstName',
           type: 'text',
           required: true,
-          access: {
-            create: ({ req }) => anyAdmin({ req }),
-            update: ({ req }) => anyAdmin({ req }),
-          },
         },
         {
           name: 'lastName',
           type: 'text',
           required: true,
-          access: {
-            create: ({ req }) => anyAdmin({ req }),
-            update: ({ req }) => anyAdmin({ req }),
-          },
         },
       ],
     },
@@ -106,13 +98,13 @@ export const Users: CollectionConfig = {
       },
       fields: [
         {
-          name: 'collectionSlug',
+          name: 'collectionOrGroupSlug',
           type: 'select',
           hasMany: false,
           required: true,
-          options: Object.values(COLLECTIONS).map((collection) => ({
-            value: collection,
-            label: COLLECTION_LABELS[collection].plural,
+          options: COLLECTION_FOR_PERMISSION_OPTIONS.map(({ slug, label }) => ({
+            value: slug,
+            label,
           })),
         },
         {

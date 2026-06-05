@@ -1,7 +1,12 @@
 import type { AccessArgs } from 'payload'
 
 import type { User } from '@/payload-types'
-import type { CollectionSlug } from '@/constants/collections'
+import {
+  getCollectionGroupItems,
+  getCollectionSlugType,
+  type CollectionGroupSlug,
+  type CollectionSlug,
+} from '@/constants/collections'
 import { anyAdmin } from './anyAdmin'
 import { AccessType } from '@/constants/accessTypes'
 import { COLLECTION_PERMISSION_TO_ACCESS_TYPES } from '@/constants/collectionPermissions'
@@ -23,22 +28,27 @@ export function checkCollectionAccess(
 
   const allowedCollections = user.allowedCollections || []
 
-  if (allowedCollections.length === 0) {
+  if (allowedCollections.length === 0 || !accessType) {
     return false
   }
 
-  const slugPermissions = allowedCollections.find((x) => x.collectionSlug === collectionSlug)
+  return allowedCollections.some((assignment) => {
+    const assignedSlug = assignment.collectionOrGroupSlug
+    const slugType = getCollectionSlugType(assignedSlug)
+    let isApplicable = false
 
-  if (!slugPermissions) {
+    if (slugType === 'group') {
+      const groupItems = getCollectionGroupItems(assignedSlug as CollectionGroupSlug)
+      isApplicable = groupItems.includes(collectionSlug)
+    } else if (slugType === 'collection') {
+      isApplicable = assignedSlug === collectionSlug
+    }
+
+    if (isApplicable) {
+      const grantedAccessTypes = COLLECTION_PERMISSION_TO_ACCESS_TYPES[assignment.permissions]
+      return grantedAccessTypes.includes(accessType)
+    }
+
     return false
-  }
-
-  if (accessType) {
-    const access = slugPermissions.permissions
-    const accessTypesForPermission = COLLECTION_PERMISSION_TO_ACCESS_TYPES[access]
-
-    return accessTypesForPermission.includes(accessType)
-  }
-
-  return false
+  })
 }

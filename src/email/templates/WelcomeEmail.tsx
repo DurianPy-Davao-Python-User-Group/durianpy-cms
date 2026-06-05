@@ -1,7 +1,6 @@
 import { FC } from 'react'
 const { renderToStaticMarkup } = await import('react-dom/server')
 
-// TODO: Update email template to include link of CMS
 const WelcomeEmail: FC<{ firstName: string }> = ({ firstName }) => {
   return (
     <div className="container">
@@ -11,8 +10,8 @@ const WelcomeEmail: FC<{ firstName: string }> = ({ firstName }) => {
       </p>
       <p>
         An account has been created for you using this email address. This will grant you access to
-        our content management system (CMS), where you can manage and collaborate on projects
-        seamlessly.
+        our <a href={process.env.NEXT_PUBLIC_SERVER_URL}>content management system (CMS)</a>, where
+        you can manage and collaborate on projects seamlessly.
       </p>
       <p>
         To get started, please contact the DurianPy CMS support team to receive your password and
@@ -29,7 +28,7 @@ const WelcomeEmail: FC<{ firstName: string }> = ({ firstName }) => {
         <p>
           <i>
             If you didn’t expect this email, please disregard it or contact{' '}
-            <a href="mailto:support@durianpy.com">support@durianpy.com</a> for assistance.
+            <a href="mailto:engineering@durianpy.com">engineering@durianpy.com</a> for assistance.
           </i>
         </p>
       </div>
@@ -37,4 +36,6 @@ const WelcomeEmail: FC<{ firstName: string }> = ({ firstName }) => {
   )
 }
 
-export default (firstName: string) => renderToStaticMarkup(<WelcomeEmail firstName={firstName} />)
+export default function Email(firstName: string) {
+  return renderToStaticMarkup(<WelcomeEmail firstName={firstName} />)
+}
