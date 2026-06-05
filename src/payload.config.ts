@@ -9,19 +9,17 @@ import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL, getServerSideOrigin } from './utilities/getURL'
+import { Sample } from './collections/durianpy-website/sample-website-collection.index'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const isProduction = process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
+const isProduction =
+  process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
 
 const hasSmtpConfig = Boolean(
   process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
@@ -78,7 +76,7 @@ export default buildConfig({
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS,
           },
-        }
+        },
       }),
     }),
   editor: defaultLexical,
@@ -95,28 +93,23 @@ export default buildConfig({
       },
     }),
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
-  cors: [getServerSideOrigin()]
-    .filter(Boolean)
-    .map((url) => {
-      try {
-        const { origin } = new URL(url!)
-        return origin
-      } catch (e) {
-        return url!
-      }
-    }),
-  csrf: [getServerSideOrigin()]
-    .filter(Boolean)
-    .map((url) => {
-      try {
-        const { origin } = new URL(url!)
-        return origin
-      } catch (e) {
-        return url!
-      }
-    }),
-  globals: [Header, Footer],
+  collections: [Media, Categories, Users, Sample],
+  cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
+    try {
+      const { origin } = new URL(url!)
+      return origin
+    } catch (_) {
+      return url!
+    }
+  }),
+  csrf: [getServerSideOrigin()].filter(Boolean).map((url) => {
+    try {
+      const { origin } = new URL(url!)
+      return origin
+    } catch (_) {
+      return url!
+    }
+  }),
   plugins: [
     ...plugins,
     ...(process.env.S3_BUCKET
@@ -174,5 +167,8 @@ export default buildConfig({
       },
     },
     tasks: [],
+  },
+  folders: {
+    browseByFolder: false,
   },
 })

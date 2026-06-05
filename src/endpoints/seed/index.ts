@@ -1,24 +1,12 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest } from 'payload'
+import type { CollectionSlug, Payload, PayloadRequest } from 'payload'
 
 import { seedUsers } from '../../seed/collections/Users'
 import { seedMedia } from '../../seed/collections/Media'
 import { seedCategories } from '../../seed/collections/Categories'
-import { seedPosts } from '../../seed/collections/Posts'
 import { seedForms } from '../../seed/collections/Forms'
-import { seedPages } from '../../seed/collections/Pages'
-import { seedGlobals } from '../../seed/globals'
+import { COLLECTIONS } from '@/constants/collections'
 
-const collections: CollectionSlug[] = [
-  'categories',
-  'media',
-  'pages',
-  'posts',
-  'forms',
-  'form-submissions',
-  'search',
-]
-
-const globals: GlobalSlug[] = ['header', 'footer']
+const collections: CollectionSlug[] = Object.values(COLLECTIONS).map((x) => x)
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -41,22 +29,13 @@ export const seed = async ({
 
   // clear the database
   await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  )
+    collections.map((collection) => {
+      if (collection === 'users') {
+        return
+      }
 
-  await Promise.all(
-    collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
+      payload.db.deleteMany({ collection, req, where: {} })
+    }),
   )
 
   await Promise.all(
@@ -65,18 +44,12 @@ export const seed = async ({
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
-  const demoAuthor = await seedUsers({ payload })
-  const { image1Doc, image2Doc, image3Doc, imageHomeDoc } = await seedMedia({ payload })
-  
+  await seedUsers({ payload })
+  await seedMedia({ payload })
+
   await seedCategories({ payload })
-  
-  await seedPosts({ payload, demoAuthor, image1Doc, image2Doc, image3Doc })
-  
-  const contactForm = await seedForms({ payload })
-  
-  const { contactPage } = await seedPages({ payload, imageHomeDoc, image2Doc, contactForm })
-  
-  await seedGlobals({ payload, contactPage })
+
+  await seedForms({ payload })
 
   payload.logger.info('Seeded database successfully!')
 }
