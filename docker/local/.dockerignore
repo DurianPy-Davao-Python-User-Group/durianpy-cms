@@ -8,28 +8,30 @@
 .cursor
 .vscode
 .editorconfig
+.prettierrc.json
 .prettierignore
+eslint.config.mjs
 
-# DevContainer and CI/CD
+# DevContainer
 .devcontainer
-.github
-.wiki
 
 # Documentation
+.wiki
 README.md
 AGENTS.md
-*.md
+
+# CI/CD
+.github
 
 # Build Artifacts and Cache
 .next
-node_modules
 dist
 build
 out
 .turbo
 .cache
 .npm
-.pnpm-store
+.npmrc
 
 # Logs
 *.log
@@ -38,11 +40,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Dependencies (Already handled by deps stage)
+# Dependencies
 node_modules
+.pnpm-store
 
 # Docker and Compose
-docker/local
+docker
 compose*.yml
 
 # Tests
@@ -54,9 +57,15 @@ test.env
 vitest.config.mts
 vitest.setup.ts
 
-# Secrets (Secrets should be provided via Buildkit secrets or AWS Secrets Manager)
-.env
-.env.*
+# Configuration files (not needed for image build as they are usually mounted or not needed during npm install)
+next.config.ts
+tailwind.config.mjs
+postcss.config.js
+tsconfig.json
+components.json
+next-sitemap.config.cjs
+redirects.ts
+src/payload-types.ts
 
 # Misc
 .DS_Store
