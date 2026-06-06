@@ -9,6 +9,13 @@
     "vscode": {
       "extensions": ["mongodb.mongodb-vscode", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
       "settings": {
+        "mdb.presetConnections": [
+          {
+            "connectionString": "mongodb://mongodb:27017/durianpy-cms",
+            "name": "Local MongoDB"
+          }
+        ],
+        "mdb.connectionSaving.defaultConnectionSavingLocation": "Workspace",
         "editor.tabSize": 2,
         "editor.insertSpaces": true,
         "editor.detectIndentation": false,
@@ -19,6 +26,6 @@
   },
   "remoteUser": "node",
   "containerUser": "node",
-  "postCreateCommand": "npm run payload migrate",
+  "postCreateCommand": "npm run payload migrate && npm run payload generate:importmap",
   "postStartCommand": "npm run dev"
 }
