@@ -10,7 +10,7 @@ services:
   durianpy-cms:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.dev
+      dockerfile: docker/local/Dockerfile
     command: sleep infinity
     volumes:
       - ..:/app:cached
