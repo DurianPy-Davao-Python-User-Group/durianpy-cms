@@ -120,7 +120,7 @@ jobs:
 
       - name: Sync Static Assets to S3
         run: |
-          aws s3 sync .next/static s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/_next/static --delete
+          aws s3 sync .next/static s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/artifacts/_next/static --delete
           aws s3 sync public s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/public --delete
 
       - name: Fetch Lambda Layer URL
