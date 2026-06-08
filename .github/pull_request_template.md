@@ -31,9 +31,12 @@ _Describe the new fields/tables or drag-and-drop a screenshot here:_
 - [ ] **Database**: Confirmed data is saved correctly in the local DB.
 - [ ] **Automated Tests**: Added or updated test scripts.
 
-### 📸 Visual Evidence (Optional)
+### 📸 Visual Evidence (Mandatory)
 
-_Drag and drop screenshots, screen recordings, or sample API outputs below:_
+> [!IMPORTANT]
+> Visual proof is required for all changes affecting the UI or API responses.
+
+_Please provide screenshots, screen recordings (GIFs/Videos), or sample API outputs demonstrating that your changes work as intended and do not introduce regressions._
 
 ---
 
@@ -43,6 +46,7 @@ _Drag and drop screenshots, screen recordings, or sample API outputs below:_
 - [ ] **Pre-commit**: Installed and ran pre-commit hooks successfully.
 - [ ] **Security**: Verified no secrets or local credentials are included.
 - [ ] **Build**: Project builds without errors.
+- [ ] **Visuals**: Attached mandatory visual evidence (screenshots/recordings/API outputs).
 - [ ] **Migrations**: Migration script included (if applicable).
 
 ---
