@@ -26,17 +26,17 @@ _Describe the new fields/tables or drag-and-drop a screenshot here:_
 
 ## 🧪 Testing & Validation
 
+- [ ] **Test Case Approval**: Verified that test cases were commented on the assigned GitHub issue and approved by the Project Lead _before_ development started.
+- [ ] **Unit Tests**: Added or updated unit test scripts covering the new logic.
 - [ ] **Admin Panel**: Verified behavior in the CMS Admin UI.
 - [ ] **API Check**: Tested REST/GraphQL endpoints for correct data.
-- [ ] **Database**: Confirmed data is saved correctly in the local DB.
-- [ ] **Automated Tests**: Added or updated test scripts.
 
 ### 📸 Visual Evidence (Mandatory)
 
 > [!IMPORTANT]
-> Visual proof is required for all changes affecting the UI or API responses.
+> Visual proof is required to demonstrate that the approved test cases from the issue were successfully met.
 
-_Please provide screenshots, screen recordings (GIFs/Videos), or sample API outputs demonstrating that your changes work as intended and do not introduce regressions._
+_Please provide screenshots, screen recordings (GIFs/Videos), or sample API outputs proving that the feature satisfies all approved test cases and do not introduce regressions._
 
 ---
 
@@ -46,7 +46,7 @@ _Please provide screenshots, screen recordings (GIFs/Videos), or sample API outp
 - [ ] **Pre-commit**: Installed and ran pre-commit hooks successfully.
 - [ ] **Security**: Verified no secrets or local credentials are included.
 - [ ] **Build**: Project builds without errors.
-- [ ] **Visuals**: Attached mandatory visual evidence (screenshots/recordings/API outputs).
+- [ ] **Visuals**: Attached mandatory visual evidence proving all test cases passed.
 - [ ] **Migrations**: Migration script included (if applicable).
 
 ---
