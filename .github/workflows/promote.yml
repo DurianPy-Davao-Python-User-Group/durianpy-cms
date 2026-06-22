@@ -20,4 +20,4 @@ jobs:
       - name: Push to Target Branch (release/production)
         run: |
           git checkout -B release/production
-          git push origin release/production --force-with-lease
+          git push origin release/production --force
