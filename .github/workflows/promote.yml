@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   promote:
@@ -17,7 +18,14 @@ jobs:
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
-      - name: Push to Target Branch (release/production)
+      - name: Create Auto PR and Merge
+        env:
+          GH_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
         run: |
-          git checkout -B release/production
-          git push origin release/production --force
+          pr_url=$(gh pr create \
+            --title "Release: Promote main to production" \
+            --body "Automated promotion from main branch" \
+            --base release/production \
+            --head main || gh pr list --base release/production --head main --json url --jq '.[0].url')
+
+          gh pr merge "$pr_url" --rebase --admin --auto
