@@ -62,16 +62,23 @@ jobs:
           mask-values: true
           recursive: true
 
-      - name: Install Dependencies and Build
+      - name: Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Execute Integration Tests
+        env:
+          PAYLOAD_SECRET: ${{ steps.ssm-param.outputs.PAYLOAD_SECRET }}
+          DATABASE_URL: ${{ steps.ssm-param.outputs.DATABASE_URL }}
+        run: npm run test:int
+
+      - name: Build Project
         env:
           ENVIRONMENT: 'production'
           PAYLOAD_SECRET: ${{ steps.ssm-param.outputs.PAYLOAD_SECRET }}
           DATABASE_URL: ${{ steps.ssm-param.outputs.DATABASE_URL }}
           NEXT_PUBLIC_SERVER_URL: ${{ steps.ssm-param.outputs.NEXT_PUBLIC_SERVER_URL }}
           CLOUDFRONT_DISTRIBUTION_DOMAIN: ${{ steps.ssm-param.outputs.CLOUDFRONT_DISTRIBUTION_DOMAIN }}
-        run: |
-          npm ci --legacy-peer-deps
-          npm run build
+        run: npm run build
 
       - name: Sync Static Assets to S3
         run: |
