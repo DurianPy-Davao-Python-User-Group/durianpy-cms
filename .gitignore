@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 .env
 .env*
+!.env.ci-build
 .next
 next-env.d.ts
 .vercel
