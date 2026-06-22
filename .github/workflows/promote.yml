@@ -1,0 +1,23 @@
+name: CMS Promotion to Production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    name: Promote Main to Release
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Push to Target Branch (release/production)
+        run: |
+          git checkout -B release/production
+          git push origin release/production --force-with-lease
