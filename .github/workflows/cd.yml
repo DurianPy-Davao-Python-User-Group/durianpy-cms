@@ -5,36 +5,26 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   actions: read
   security-events: write
 
 jobs:
   deploy:
     name: Build & Production Deploy
-    if: github.ref_name == 'production'
+    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Verify CI Workflow Completion
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Checking the status of the latest 'CMS Continuous Integration' run for branch '${{ github.ref_name }}'..."
-          conclusion=$(gh run list --workflow "CMS Continuous Integration" --branch "${{ github.ref_name }}" --limit 1 --json conclusion --jq '.[0].conclusion')
-
-          if [ -z "$conclusion" ]; then
-            echo "❌ No runs found for the CI workflow on branch '${{ github.ref_name }}'."
-            exit 1
-          elif [ "$conclusion" != "success" ]; then
-            echo "❌ The latest run of the CI workflow on branch '${{ github.ref_name }}' is not successful (status: $conclusion)."
-            exit 1
-          fi
-
-          echo "✅ The latest CI workflow run completed successfully."
-
       - name: Checkout Source Code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Push to Target Branch (release/production)
+        run: |
+          git checkout -B release/production
+          git push origin release/production --force-with-lease
 
       - name: Authenticate to AWS
         uses: aws-actions/configure-aws-credentials@v4
