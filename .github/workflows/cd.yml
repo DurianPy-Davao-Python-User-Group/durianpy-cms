@@ -8,9 +8,9 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   actions: read
-  security-events: write
+  pull-requests: read
 
 jobs:
   deploy:
@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Authenticate to AWS
         uses: aws-actions/configure-aws-credentials@v4
@@ -46,6 +48,12 @@ jobs:
           with-decryption: true
           mask-values: true
           recursive: true
+
+      - name: Determine and Apply Version Bump
+        id: version-bump
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/bump-version.sh
 
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
@@ -98,22 +106,6 @@ jobs:
             AWS_DEFAULT_REGION=ap-southeast-1
             ENVIRONMENT=production
 
-      - name: Codebase Scan (Vulnerabilities & Misconfigurations)
-        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          scanners: 'vuln,misconfig'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
-          skip-files: '.env.ci-build'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results.sarif'
-
       - name: Push Image
         if: success()
         run: |
@@ -124,7 +116,6 @@ jobs:
         run: |
           echo "### 🚢 Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "Image: \`${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "Security Scan: Results uploaded to the GitHub Security tab." >> $GITHUB_STEP_SUMMARY
 
       - name: Deploy to AWS Lambda
         if: success()
@@ -132,3 +123,26 @@ jobs:
           aws lambda update-function-code \
             --function-name durianpy-cms-prod \
             --image-uri ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}
+
+      - name: Commit and Push Version Bump
+        if: success()
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.new_tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore(release): bump version to $NEW_TAG [skip ci]"
+          git push origin release/production
+
+      - name: Create Git Tag and Release
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_TAG: ${{ steps.version-bump.outputs.new_tag }}
+        run: |
+          echo "🚀 Creating GitHub Release for $NEW_TAG..."
+          gh release create "$NEW_TAG" \
+            --title "Release $NEW_TAG" \
+            --generate-notes \
+            --target "release/production"

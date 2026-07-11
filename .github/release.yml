@@ -1,0 +1,41 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-release
+      - duplicate
+    authors:
+      - github-actions[bot]
+      - dependabot[bot]
+
+  categories:
+    - title: '🚀 Features'
+      labels:
+        - feature
+        - feat
+        - enhancement
+
+    - title: '🐛 Bug Fixes'
+      labels:
+        - bug
+        - fix
+        - hotfix
+
+    - title: '📖 Documentation'
+      labels:
+        - documentation
+        - docs
+
+    - title: '⚙️ Refactoring & Infrastructure'
+      labels:
+        - refactor
+        - chore
+        - ci
+
+    - title: '📦 Dependency Updates'
+      labels:
+        - dependencies
+        - dependency
+
+    - title: '🏡 Other Changes'
+      labels:
+        - '*'
