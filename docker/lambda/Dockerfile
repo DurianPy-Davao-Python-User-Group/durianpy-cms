@@ -17,7 +17,7 @@ FROM base AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json .npmrc* ./
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --ignore-scripts
 
 FROM base AS builder
 WORKDIR /app
