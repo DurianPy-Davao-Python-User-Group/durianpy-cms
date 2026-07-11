@@ -1,6 +1,7 @@
 ## 🚀 Production Release PR
 
-> [!IMPORTANT] > **Action Required**: You MUST apply one of the following labels to this PR in the GitHub sidebar before merging:
+> [!IMPORTANT]
+> **Action Required**: You MUST apply one of the following labels to this PR in the GitHub sidebar before merging:
 >
 > - `release:major` (Breaking changes — e.g., `1.0.0` ➡️ `2.0.0`)
 > - `release:minor` (New features / non-breaking schema additions — e.g., `1.0.0` ➡️ `1.1.0`)
