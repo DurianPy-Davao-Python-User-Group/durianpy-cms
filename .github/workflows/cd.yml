@@ -5,6 +5,16 @@ on:
     branches:
       - release/production
   workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'SemVer bump type (used if manual run)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 permissions:
   id-token: write
@@ -53,6 +63,7 @@ jobs:
         id: version-bump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUMP_TYPE_INPUT: ${{ github.event.inputs.bump_type }}
         run: ./scripts/bump-version.sh
 
       - name: Install Dependencies
@@ -124,15 +135,29 @@ jobs:
             --function-name durianpy-cms-prod \
             --image-uri ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}
 
-      - name: Commit and Push Version Bump
+      - name: Commit and Push Version Bump and CHANGELOG
         if: success()
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_TAG: ${{ steps.version-bump.outputs.new_tag }}
         run: |
+          # 1. Generate release notes from GitHub API
+          echo "Generating release notes for $NEW_TAG..."
+          RELEASE_NOTES=$(gh release generate-notes --tag "$NEW_TAG" --target "release/production")
+
+          # 2. Prepend notes to CHANGELOG.md
+          DATE_STR=$(date +%Y-%m-%d)
+          if [ -f CHANGELOG.md ]; then
+            echo -e "# Release $NEW_TAG ($DATE_STR)\n\n$RELEASE_NOTES\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
+          else
+            echo -e "# Release $NEW_TAG ($DATE_STR)\n\n$RELEASE_NOTES" > CHANGELOG.md
+          fi
+
+          # 3. Commit and push changes
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json
-          git commit -m "chore(release): bump version to $NEW_TAG [skip ci]"
+          git add package.json CHANGELOG.md
+          git commit -m "chore(release): bump version to $NEW_TAG and update CHANGELOG [skip ci]"
           git push origin release/production
 
       - name: Create Git Tag and Release
