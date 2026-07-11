@@ -4,13 +4,39 @@ on:
   pull_request:
     branches:
       - main
+      - release/production
 
 permissions:
   id-token: write
   contents: read
   security-events: write
+  pull-requests: read
 
 jobs:
+  check-labels:
+    name: Verify Release Labels
+    if: github.base_ref == 'release/production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          LABELS=$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name')
+          echo "PR Labels: $LABELS"
+
+          if echo "$LABELS" | grep -q "release:major"; then
+            echo "✅ Found release:major label."
+          elif echo "$LABELS" | grep -q "release:minor"; then
+            echo "✅ Found release:minor label."
+          elif echo "$LABELS" | grep -q "release:patch"; then
+            echo "✅ Found release:patch label."
+          else
+            echo "❌ Error: Pull Requests targeting release/production must have one of these labels: release:major, release:minor, or release:patch"
+            exit 1
+          fi
+
   validate:
     name: Validation & Security
     runs-on: ubuntu-latest
