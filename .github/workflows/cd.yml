@@ -143,7 +143,7 @@ jobs:
         run: |
           # 1. Generate release notes from GitHub API
           echo "Generating release notes for $NEW_TAG..."
-          RELEASE_NOTES=$(gh release generate-notes --tag "$NEW_TAG" --target "release/production")
+          RELEASE_NOTES=$(gh api --method POST /repos/"$GITHUB_REPOSITORY"/releases/generate-notes -f tag_name="$NEW_TAG" -f target_commitish="release/production" --jq .body)
 
           # 2. Prepend notes to CHANGELOG.md
           DATE_STR=$(date +%Y-%m-%d)

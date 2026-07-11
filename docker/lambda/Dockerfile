@@ -10,7 +10,7 @@ RUN if [ -z "$LAYER_URL" ]; then echo "LAYER_URL build-arg is required" && exit 
 
 # Step 2: Base Image
 FROM node:24-alpine@sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f AS base
-RUN apk add --no-cache libc6-compat python3 make g++
+RUN apk add --no-cache libc6-compat
 
 # Step 3: Install dependencies and build the application
 FROM base AS deps
