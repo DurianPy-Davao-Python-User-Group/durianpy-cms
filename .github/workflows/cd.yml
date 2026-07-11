@@ -1,4 +1,4 @@
-name: CMS Production Continuous Delivery
+name: Production CD Pipeline
 
 on:
   push:
@@ -94,7 +94,7 @@ jobs:
           file: docker/lambda/Dockerfile
           load: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}
           secrets: |
             payload_secret=${{ steps.ssm-param.outputs.PAYLOAD_SECRET }}
             database_url=${{ steps.ssm-param.outputs.DATABASE_URL }}
@@ -109,20 +109,20 @@ jobs:
       - name: Push Image
         if: success()
         run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}
 
       - name: Summarize Build
         if: always()
         run: |
           echo "### 🚢 Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "Image: \`${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "Image: \`${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Deploy to AWS Lambda
         if: success()
         run: |
           aws lambda update-function-code \
             --function-name durianpy-cms-prod \
-            --image-uri ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ github.sha }}
+            --image-uri ${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}
 
       - name: Commit and Push Version Bump
         if: success()
