@@ -7,15 +7,20 @@ LABELS=$(echo "$PR_JSON" | jq -r '.[0].labels[].name' 2>/dev/null || echo "")
 
 # 2. Determine bump type
 BUMP_TYPE=""
-if echo "$LABELS" | grep -q "release:major"; then
-  BUMP_TYPE="major"
-elif echo "$LABELS" | grep -q "release:minor"; then
-  BUMP_TYPE="minor"
-elif echo "$LABELS" | grep -q "release:patch"; then
-  BUMP_TYPE="patch"
+if [ -n "$BUMP_TYPE_INPUT" ]; then
+  BUMP_TYPE="$BUMP_TYPE_INPUT"
+  echo "Manual run input detected. Selected bump type: $BUMP_TYPE"
 else
-  echo "⚠️ No release labels found on the merged PR. Defaulting to patch bump."
-  BUMP_TYPE="patch"
+  if echo "$LABELS" | grep -q "release:major"; then
+    BUMP_TYPE="major"
+  elif echo "$LABELS" | grep -q "release:minor"; then
+    BUMP_TYPE="minor"
+  elif echo "$LABELS" | grep -q "release:patch"; then
+    BUMP_TYPE="patch"
+  else
+    echo "❌ Error: Pull Requests targeting release/production must have one of these labels: release:major, release:minor, or release:patch"
+    exit 1
+  fi
 fi
 
 echo "Selected bump type: $BUMP_TYPE"
