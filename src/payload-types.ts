@@ -103,8 +103,12 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'homepage-config': HomepageConfig;
+  };
+  globalsSelect: {
+    'homepage-config': HomepageConfigSelect<false> | HomepageConfigSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -1097,6 +1101,34 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-config".
+ */
+export interface HomepageConfig {
+  id: string;
+  heroImageDesktop: string | Media;
+  heroImageMobile: string | Media;
+  heroTitle?: string | null;
+  heroSubtitle?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-config_select".
+ */
+export interface HomepageConfigSelect<T extends boolean = true> {
+  heroImageDesktop?: T;
+  heroImageMobile?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1117,7 +1149,7 @@ export interface TaskSchedulePublish {
       relationTo: 'sample';
       value: string | Sample;
     } | null;
-    global?: string | null;
+    global?: 'homepage-config' | null;
     user?: (string | null) | User;
   };
   output?: unknown;

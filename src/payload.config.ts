@@ -14,6 +14,7 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL, getServerSideOrigin } from './utilities/getURL'
 import { Sample } from './collections/durianpy-website/sample-website-collection.index'
+import { HomepageConfig } from './globals/durianpy-website/HomepageConfig'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -94,6 +95,7 @@ export default buildConfig({
     }),
   }),
   collections: [Media, Categories, Users, Sample],
+  globals: [HomepageConfig],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
       const { origin } = new URL(url!)
