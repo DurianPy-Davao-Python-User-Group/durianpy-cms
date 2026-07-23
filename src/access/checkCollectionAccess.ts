@@ -13,7 +13,7 @@ import { COLLECTION_PERMISSION_TO_ACCESS_TYPES } from '@/constants/collectionPer
 
 export function checkCollectionAccess(
   { req }: AccessArgs<User>,
-  collectionSlug: CollectionSlug,
+  collectionSlug: CollectionSlug | string,
   accessType?: AccessType,
 ) {
   const user = req.user

@@ -47,8 +47,8 @@ export function getCollectionGroupLabel(groupSlug: CollectionGroupSlug) {
   return COLLECTION_GROUPS_LABEL[groupSlug]
 }
 
-export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, CollectionSlug[]> = {
-  'durianpy-website': [],
+export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, string[]> = {
+  'durianpy-website': ['sample', 'organization-status'],
   admin: ['users'],
 } as const
 

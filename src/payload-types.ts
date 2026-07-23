@@ -103,8 +103,12 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'organization-status': OrganizationStatus;
+  };
+  globalsSelect: {
+    'organization-status': OrganizationStatusSelect<false> | OrganizationStatusSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -1097,6 +1101,34 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization-status".
+ */
+export interface OrganizationStatus {
+  id: string;
+  isPSFPartner?: boolean | null;
+  psfPartnerLogo?: (string | null) | Media;
+  status: 'active' | 'inactive' | 'pending';
+  message?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization-status_select".
+ */
+export interface OrganizationStatusSelect<T extends boolean = true> {
+  isPSFPartner?: T;
+  psfPartnerLogo?: T;
+  status?: T;
+  message?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1117,7 +1149,7 @@ export interface TaskSchedulePublish {
       relationTo: 'sample';
       value: string | Sample;
     } | null;
-    global?: string | null;
+    global?: 'organization-status' | null;
     user?: (string | null) | User;
   };
   output?: unknown;
