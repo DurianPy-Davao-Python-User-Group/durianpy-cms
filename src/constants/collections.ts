@@ -14,6 +14,7 @@ export const COLLECTIONS = {
   MEDIA: 'media',
   USERS: 'users',
   SAMPLE: 'sample',
+  SERVICE_ACCOUNTS: 'service-accounts',
   DURIANPY_WEBSITE_EVENTS: 'durianpy-website-events',
   DURIANPY_WEBSITE_SPONSORS: 'durianpy-website-sponsors',
   DURIANPY_WEBSITE_SIGS: 'durianpy-website-sigs',
@@ -29,6 +30,7 @@ export const COLLECTION_LABELS: Record<CollectionSlug, { singular: string; plura
   [COLLECTIONS.DURIANPY_WEBSITE_EVENTS]: { singular: 'Event', plural: 'Events' },
   [COLLECTIONS.DURIANPY_WEBSITE_SPONSORS]: { singular: 'Sponsor', plural: 'Sponsors' },
   [COLLECTIONS.DURIANPY_WEBSITE_SIGS]: { singular: 'SIG', plural: 'SIGs' },
+  [COLLECTIONS.SERVICE_ACCOUNTS]: { singular: 'Service Account', plural: 'Service Accounts' },
 }
 
 /**
@@ -57,7 +59,7 @@ export function getCollectionGroupLabel(groupSlug: CollectionGroupSlug) {
 
 export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, CollectionSlug[]> = {
   'durianpy-website': [COLLECTIONS.DURIANPY_WEBSITE_EVENTS, COLLECTIONS.DURIANPY_WEBSITE_SPONSORS],
-  admin: ['users'],
+  admin: ['users', 'service-accounts'],
 } as const
 
 export function getCollectionGroupItems(groupSlug: CollectionGroupSlug) {

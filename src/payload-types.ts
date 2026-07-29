@@ -64,6 +64,7 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    'service-accounts': ServiceAccountAuthOperations;
   };
   blocks: {};
   collections: {
@@ -71,6 +72,7 @@ export interface Config {
     categories: Category;
     users: User;
     sample: Sample;
+    'service-accounts': ServiceAccount;
     'durianpy-website-events': DurianpyWebsiteEvent;
     'durianpy-website-sponsors': DurianpyWebsiteSponsor;
     'durianpy-website-sigs': DurianpyWebsiteSig;
@@ -93,6 +95,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     sample: SampleSelect<false> | SampleSelect<true>;
+    'service-accounts': ServiceAccountsSelect<false> | ServiceAccountsSelect<true>;
     'durianpy-website-events': DurianpyWebsiteEventsSelect<false> | DurianpyWebsiteEventsSelect<true>;
     'durianpy-website-sponsors': DurianpyWebsiteSponsorsSelect<false> | DurianpyWebsiteSponsorsSelect<true>;
     'durianpy-website-sigs': DurianpyWebsiteSigsSelect<false> | DurianpyWebsiteSigsSelect<true>;
@@ -127,7 +130,7 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User;
+  user: User | ServiceAccount;
   jobs: {
     tasks: {
       schedulePublish: TaskSchedulePublish;
@@ -140,6 +143,24 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface ServiceAccountAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -318,6 +339,7 @@ export interface User {
           | 'media'
           | 'users'
           | 'sample'
+          | 'service-accounts'
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
           | 'durianpy-website-sigs'
@@ -360,6 +382,53 @@ export interface Sample {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-accounts".
+ */
+export interface ServiceAccount {
+  id: string;
+  name: string;
+  role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
+  allowedCollections?:
+    | {
+        collectionOrGroupSlug:
+          | 'admin'
+          | 'durianpy-website'
+          | 'categories'
+          | 'media'
+          | 'users'
+          | 'sample'
+          | 'service-accounts'
+          | 'durianpy-website-events'
+          | 'durianpy-website-sponsors'
+          | 'durianpy-website-sigs';
+        permissions: 'read' | 'read-write' | 'full-access';
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'service-accounts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -734,6 +803,10 @@ export interface PayloadLockedDocument {
         value: string | Sample;
       } | null)
     | ({
+        relationTo: 'service-accounts';
+        value: string | ServiceAccount;
+      } | null)
+    | ({
         relationTo: 'durianpy-website-events';
         value: string | DurianpyWebsiteEvent;
       } | null)
@@ -758,10 +831,15 @@ export interface PayloadLockedDocument {
         value: string | FolderInterface;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: string | User;
+      }
+    | {
+        relationTo: 'service-accounts';
+        value: string | ServiceAccount;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -771,10 +849,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: string;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: string | User;
+      }
+    | {
+        relationTo: 'service-accounts';
+        value: string | ServiceAccount;
+      };
   key?: string | null;
   value?:
     | {
@@ -955,6 +1038,40 @@ export interface SampleSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-accounts_select".
+ */
+export interface ServiceAccountsSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  allowedCollections?:
+    | T
+    | {
+        collectionOrGroupSlug?: T;
+        permissions?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
