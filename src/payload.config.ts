@@ -10,6 +10,7 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { ServiceAccounts } from './collections/ServiceAccounts'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL, getServerSideOrigin } from './utilities/getURL'
@@ -101,7 +102,7 @@ export default buildConfig({
       },
     }),
   }),
-  collections: [Media, Categories, Users, Sample, Events, Sponsors, SIGs],
+  collections: [Media, Categories, Users, Sample, ServiceAccounts, Events, Sponsors, SIGs],
   globals: [HomepageConfig, CTASection, StatisticsConfig, Carousel, CodeOfConduct],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
