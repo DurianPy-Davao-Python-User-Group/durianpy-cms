@@ -17,6 +17,7 @@ import { Sample } from './collections/durianpy-website/sample-website-collection
 import { HomepageConfig } from './globals/durianpy-website/HomepageConfig'
 import { StatisticsConfig } from './globals/durianpy-website/StatisticsConfig'
 import { CTASection } from './globals/durianpy-website/CTASection'
+import { Events } from './collections/durianpy-website/Events'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -98,6 +99,8 @@ export default buildConfig({
   }),
   collections: [Media, Categories, Users, Sample],
   globals: [HomepageConfig, CTASection, StatisticsConfig],
+  collections: [Media, Categories, Users, Sample, Events],
+  globals: [HomepageConfig],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
       const { origin } = new URL(url!)

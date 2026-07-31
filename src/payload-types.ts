@@ -71,6 +71,7 @@ export interface Config {
     categories: Category;
     users: User;
     sample: Sample;
+    events: Event;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -90,6 +91,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     sample: SampleSelect<false> | SampleSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -301,7 +303,7 @@ export interface User {
   role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
   allowedCollections?:
     | {
-        collectionOrGroupSlug: 'admin' | 'durianpy-website' | 'categories' | 'media' | 'users' | 'sample';
+        collectionOrGroupSlug: 'admin' | 'durianpy-website' | 'categories' | 'media' | 'users' | 'sample' | 'events';
         permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -333,6 +335,25 @@ export interface Sample {
   id: string;
   firstName: string;
   lastName: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  registrationLink?: string | null;
+  /**
+   * Show on the homepage countdown timer
+   */
+  isFeatured?: boolean | null;
+  coverImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -661,6 +682,10 @@ export interface PayloadLockedDocument {
         value: string | Sample;
       } | null)
     | ({
+        relationTo: 'events';
+        value: string | Event;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: string | Form;
       } | null)
@@ -867,6 +892,21 @@ export interface UsersSelect<T extends boolean = true> {
 export interface SampleSelect<T extends boolean = true> {
   firstName?: T;
   lastName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  date?: T;
+  location?: T;
+  registrationLink?: T;
+  isFeatured?: T;
+  coverImage?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1231,6 +1271,15 @@ export interface TaskSchedulePublish {
       relationTo: 'sample';
       value: string | Sample;
     } | null;
+    doc?:
+      | ({
+          relationTo: 'sample';
+          value: string | Sample;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: string | Event;
+        } | null);
     global?: string | null;
     user?: (string | null) | User;
   };
