@@ -12,6 +12,7 @@ export const COLLECTIONS = {
   MEDIA: 'media',
   USERS: 'users',
   SAMPLE: 'sample',
+  EVENTS: 'events',
 } as const
 
 export type CollectionSlug = (typeof COLLECTIONS)[keyof typeof COLLECTIONS]
@@ -21,6 +22,7 @@ export const COLLECTION_LABELS: Record<CollectionSlug, { singular: string; plura
   [COLLECTIONS.CATEGORIES]: { singular: 'Category', plural: 'Categories' },
   [COLLECTIONS.MEDIA]: { singular: 'Media Item', plural: 'Media' },
   [COLLECTIONS.USERS]: { singular: 'User', plural: 'Users' },
+  [COLLECTIONS.EVENTS]: { singular: 'Event', plural: 'Events' },
 }
 
 /**
@@ -48,7 +50,7 @@ export function getCollectionGroupLabel(groupSlug: CollectionGroupSlug) {
 }
 
 export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, CollectionSlug[]> = {
-  'durianpy-website': [],
+  'durianpy-website': [COLLECTIONS.EVENTS],
   admin: ['users'],
 } as const
 
