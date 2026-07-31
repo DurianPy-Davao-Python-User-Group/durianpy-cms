@@ -19,6 +19,7 @@ import { StatisticsConfig } from './globals/durianpy-website/StatisticsConfig'
 import { CTASection } from './globals/durianpy-website/CTASection'
 import { Events } from './collections/durianpy-website/Events'
 import { Sponsors } from './collections/durianpy-website/Sponsors'
+import { Carousel } from './globals/durianpy-website/Carousel'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -99,7 +100,7 @@ export default buildConfig({
     }),
   }),
   collections: [Media, Categories, Users, Sample, Events, Sponsors],
-  globals: [HomepageConfig, CTASection, StatisticsConfig],
+  globals: [HomepageConfig, CTASection, StatisticsConfig, Carousel],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
       const { origin } = new URL(url!)

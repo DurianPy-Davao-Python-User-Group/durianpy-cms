@@ -111,11 +111,13 @@ export interface Config {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfig;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSection;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfig;
+    carousel: Carousel;
   };
   globalsSelect: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
+    carousel: CarouselSelect<false> | CarouselSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1200,7 +1202,7 @@ export interface DurianpyWebsiteHomepageConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "durianpy-website-durianpy-website-cta-section".
+ * via the `definition` "durianpy-website-cta-section".
  */
 export interface DurianpyWebsiteCtaSection {
   id: string;
@@ -1235,6 +1237,22 @@ export interface DurianpyWebsiteStatisticsConfig {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carousel".
+ */
+export interface Carousel {
+  id: string;
+  title: string;
+  subtitle: string;
+  photos: {
+    image: string | Media;
+    id?: string | null;
+  }[];
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1283,6 +1301,24 @@ export interface DurianpyWebsiteStatisticsConfigSelect<T extends boolean = true>
         label?: T;
         value?: T;
         large?: T;
+        id?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carousel_select".
+ */
+export interface CarouselSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
         id?: T;
       };
   _status?: T;
