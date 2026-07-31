@@ -15,7 +15,7 @@ export const HomepageConfig: GlobalConfig = {
     group: getCollectionGroupLabel('durianpy-website'),
   },
   versions: {
-    drafts: true, // <-- This instantly enables staging and publishing!
+    drafts: true,
   },
   access: {
     read: () => true,
