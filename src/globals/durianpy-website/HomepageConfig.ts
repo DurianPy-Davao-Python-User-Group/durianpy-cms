@@ -1,31 +1,27 @@
+import { GlobalConfig, AccessArgs } from 'payload'
 import { checkCollectionAccess } from '@/access/checkCollectionAccess'
 import { getCollectionGroupLabel } from '@/constants/collections'
-import { GlobalConfig } from 'payload'
+import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
 
-// We will let VS Code import these automatically!
-// 1. Click on getCollectionGroupLabel below, press Ctrl + . (or Cmd + .), and click "Update import" or "Add import"
-// 2. Click on checkCollectionAccess below, press Ctrl + . (or Cmd + .), and click "Add import"
+type AccessType = 'create' | 'read' | 'update' | 'delete'
+
+const checkHomepageConfigAccess = (accessType?: AccessType) => (access: AccessArgs) =>
+  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG as any, accessType)
 
 export const HomepageConfig: GlobalConfig = {
-  slug: 'homepage-config',
+  slug: GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG,
+  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG].singular,
   admin: {
     group: getCollectionGroupLabel('durianpy-website'),
   },
+  versions: {
+    drafts: true, // <-- This instantly enables staging and publishing!
+  },
   access: {
     read: () => true,
-    // We explicitly type args as 'any' to satisfy TS, and removed the invalid 'admin' access rule!
-    update: (args: any) => checkCollectionAccess(args, 'homepage-config' as any, 'update'),
+    update: checkHomepageConfigAccess('update'),
   },
-  versions: {
-    // Globals use 'max' instead of 'maxPerDoc'
-    max: 50,
-    drafts: {
-      autosave: {
-        showSaveDraftButton: true,
-      },
-      schedulePublish: true,
-    },
-  },
+
   fields: [
     {
       name: 'heroImageDesktop',
