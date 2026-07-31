@@ -11,9 +11,11 @@ import { AccessType } from '@/constants/accessTypes'
 import { COLLECTION_PERMISSION_TO_ACCESS_TYPES } from '@/constants/collectionPermissions'
 import { GlobalSlug } from '@/constants/globals'
 
+type CollectionAccessSlug = CollectionSlug | 'carousel'
+
 export function checkCollectionAccess(
   { req }: AccessArgs<User>,
-  collectionSlug: CollectionSlug | GlobalSlug,
+  collectionSlug: CollectionAccessSlug,
   accessType?: AccessType,
 ) {
   const user = req.user
@@ -29,6 +31,10 @@ export function checkCollectionAccess(
   const allowedCollections = user.allowedCollections || []
 
   if (allowedCollections.length === 0 || !accessType) {
+    return false
+  }
+
+  if (collectionSlug === 'carousel') {
     return false
   }
 
