@@ -39,7 +39,7 @@ export function checkCollectionAccess(
 
     if (slugType === 'group') {
       const groupItems = getCollectionGroupItems(assignedSlug as CollectionGroupSlug)
-      isApplicable = groupItems.includes(collectionSlug)
+      isApplicable = groupItems.includes(collectionSlug as CollectionSlug)
     } else if (slugType === 'collection') {
       isApplicable = assignedSlug === collectionSlug
     }
