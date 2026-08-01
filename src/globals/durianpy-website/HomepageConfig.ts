@@ -6,7 +6,7 @@ import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
 type AccessType = 'create' | 'read' | 'update' | 'delete'
 
 const checkHomepageConfigAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG as any, accessType)
+  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG, accessType)
 
 export const HomepageConfig: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG,

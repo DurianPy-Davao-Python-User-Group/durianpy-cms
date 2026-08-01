@@ -1,5 +1,5 @@
 import type { AccessArgs } from 'payload'
-
+import { GlobalConfig } from 'payload'
 import type { User } from '@/payload-types'
 import {
   getCollectionGroupItems,
@@ -13,7 +13,7 @@ import { COLLECTION_PERMISSION_TO_ACCESS_TYPES } from '@/constants/collectionPer
 
 export function checkCollectionAccess(
   { req }: AccessArgs<User>,
-  collectionSlug: CollectionSlug,
+  collectionSlug: CollectionSlug | GlobalConfig['slug'],
   accessType?: AccessType,
 ) {
   const user = req.user
