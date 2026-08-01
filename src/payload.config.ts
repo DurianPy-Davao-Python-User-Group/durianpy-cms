@@ -16,6 +16,7 @@ import { getServerSideURL, getServerSideOrigin } from './utilities/getURL'
 import { Sample } from './collections/durianpy-website/sample-website-collection.index'
 import { HomepageConfig } from './globals/durianpy-website/HomepageConfig'
 import { StatisticsConfig } from './globals/durianpy-website/StatisticsConfig'
+import { CTASection } from './globals/durianpy-website/CTASection'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -97,6 +98,7 @@ export default buildConfig({
   }),
   collections: [Media, Categories, Users, Sample],
   globals: [HomepageConfig, StatisticsConfig],
+  globals: [HomepageConfig, CTASection],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
       const { origin } = new URL(url!)

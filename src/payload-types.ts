@@ -110,6 +110,11 @@ export interface Config {
   globalsSelect: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
+    'durianpy-website-cta-section': DurianpyWebsiteCtaSection;
+  };
+  globalsSelect: {
+    'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
+    'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1135,6 +1140,17 @@ export interface DurianpyWebsiteStatisticsConfig {
         id?: string | null;
       }[]
     | null;
+ * via the `definition` "durianpy-website-cta-section".
+ */
+export interface DurianpyWebsiteCtaSection {
+  id: string;
+  cards: {
+    link: string;
+    whiteText: string;
+    yellowText: string;
+    icon: string | Media;
+    id?: string | null;
+  }[];
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1164,6 +1180,16 @@ export interface DurianpyWebsiteStatisticsConfigSelect<T extends boolean = true>
         label?: T;
         value?: T;
         large?: T;
+ * via the `definition` "durianpy-website-cta-section_select".
+ */
+export interface DurianpyWebsiteCtaSectionSelect<T extends boolean = true> {
+  cards?:
+    | T
+    | {
+        link?: T;
+        whiteText?: T;
+        yellowText?: T;
+        icon?: T;
         id?: T;
       };
   _status?: T;
