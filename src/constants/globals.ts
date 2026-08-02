@@ -3,6 +3,7 @@ export const GLOBALS = {
   DURIANPY_WEBSITE_STATISTICS_CONFIG: 'durianpy-website-statistics-config',
   DURIANPY_WEBSITE_CTA_SECTION: 'durianpy-website-cta-section',
   DURIANPY_WEBSITE_CAROUSEL: 'durianpy-website-carousel',
+  DURIANPY_WEBSITE_CODE_OF_CONDUCT: 'durianpy-website-code-of-conduct',
 } as const
 
 export type GlobalSlug = (typeof GLOBALS)[keyof typeof GLOBALS]
@@ -23,5 +24,9 @@ export const GLOBAL_LABELS: Record<GlobalSlug, { singular: string; plural: strin
   [GLOBALS.DURIANPY_WEBSITE_CAROUSEL]: {
     singular: 'Carousel',
     plural: 'Carousels',
+  },
+  [GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT]: {
+    singular: 'Code of Conduct',
+    plural: 'Codes of Conduct',
   },
 }
