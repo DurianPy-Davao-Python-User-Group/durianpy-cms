@@ -114,12 +114,14 @@ export interface Config {
     'durianpy-website-cta-section': DurianpyWebsiteCtaSection;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfig;
     'durianpy-website-carousel': DurianpyWebsiteCarousel;
+    'durianpy-website-code-of-conduct': DurianpyWebsiteCodeOfConduct;
   };
   globalsSelect: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
     'durianpy-website-carousel': DurianpyWebsiteCarouselSelect<false> | DurianpyWebsiteCarouselSelect<true>;
+    'durianpy-website-code-of-conduct': DurianpyWebsiteCodeOfConductSelect<false> | DurianpyWebsiteCodeOfConductSelect<true>;
   };
   locale: null;
   widgets: {
@@ -322,7 +324,8 @@ export interface User {
           | 'durianpy-website-homepage-config'
           | 'durianpy-website-statistics-config'
           | 'durianpy-website-cta-section'
-          | 'durianpy-website-carousel';
+          | 'durianpy-website-carousel'
+          | 'durianpy-website-code-of-conduct';
         permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -1298,6 +1301,35 @@ export interface DurianpyWebsiteCarousel {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-code-of-conduct".
+ */
+export interface DurianpyWebsiteCodeOfConduct {
+  id: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * URL for the Google Form to report violations
+   */
+  reportFormUrl: string;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "durianpy-website-homepage-config_select".
  */
 export interface DurianpyWebsiteHomepageConfigSelect<T extends boolean = true> {
@@ -1360,6 +1392,18 @@ export interface DurianpyWebsiteCarouselSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-code-of-conduct_select".
+ */
+export interface DurianpyWebsiteCodeOfConductSelect<T extends boolean = true> {
+  content?: T;
+  reportFormUrl?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
