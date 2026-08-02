@@ -10,11 +10,11 @@ import {
 import type { AccessArgs, CollectionConfig } from 'payload'
 
 const checkSIGsAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, COLLECTIONS.SIGS, accessType)
+  checkCollectionAccess(access, COLLECTIONS.DURIANPY_WEBSITE_SIGS, accessType)
 
 export const SIGs: CollectionConfig = {
-  slug: 'sigs',
-  labels: COLLECTION_LABELS.sigs,
+  slug: COLLECTIONS.DURIANPY_WEBSITE_SIGS,
+  labels: COLLECTION_LABELS[COLLECTIONS.DURIANPY_WEBSITE_SIGS],
   access: {
     admin: checkSIGsAccess('admin'),
     create: checkSIGsAccess('create'),
