@@ -13,6 +13,7 @@ export const COLLECTIONS = {
   USERS: 'users',
   SAMPLE: 'sample',
   DURIANPY_WEBSITE_EVENTS: 'durianpy-website-events',
+  DURIANPY_WEBSITE_SPONSORS: 'durianpy-website-sponsors',
 } as const
 
 export type CollectionSlug = (typeof COLLECTIONS)[keyof typeof COLLECTIONS]
@@ -23,6 +24,7 @@ export const COLLECTION_LABELS: Record<CollectionSlug, { singular: string; plura
   [COLLECTIONS.MEDIA]: { singular: 'Media Item', plural: 'Media' },
   [COLLECTIONS.USERS]: { singular: 'User', plural: 'Users' },
   [COLLECTIONS.DURIANPY_WEBSITE_EVENTS]: { singular: 'Event', plural: 'Events' },
+  [COLLECTIONS.DURIANPY_WEBSITE_SPONSORS]: { singular: 'Sponsor', plural: 'Sponsors' },
 }
 
 /**

@@ -72,6 +72,7 @@ export interface Config {
     users: User;
     sample: Sample;
     'durianpy-website-events': DurianpyWebsiteEvent;
+    'durianpy-website-sponsors': DurianpyWebsiteSponsor;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -92,6 +93,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     sample: SampleSelect<false> | SampleSelect<true>;
     'durianpy-website-events': DurianpyWebsiteEventsSelect<false> | DurianpyWebsiteEventsSelect<true>;
+    'durianpy-website-sponsors': DurianpyWebsiteSponsorsSelect<false> | DurianpyWebsiteSponsorsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -310,7 +312,8 @@ export interface User {
           | 'media'
           | 'users'
           | 'sample'
-          | 'durianpy-website-events';
+          | 'durianpy-website-events'
+          | 'durianpy-website-sponsors';
         permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -361,6 +364,20 @@ export interface DurianpyWebsiteEvent {
    */
   isFeatured?: boolean | null;
   coverImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-sponsors".
+ */
+export interface DurianpyWebsiteSponsor {
+  id: string;
+  name: string;
+  logo: string | Media;
+  websiteUrl?: string | null;
+  tier: 'gold' | 'silver' | 'venue' | 'community';
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -693,6 +710,10 @@ export interface PayloadLockedDocument {
         value: string | DurianpyWebsiteEvent;
       } | null)
     | ({
+        relationTo: 'durianpy-website-sponsors';
+        value: string | DurianpyWebsiteSponsor;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: string | Form;
       } | null)
@@ -914,6 +935,19 @@ export interface DurianpyWebsiteEventsSelect<T extends boolean = true> {
   registrationLink?: T;
   isFeatured?: T;
   coverImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-sponsors_select".
+ */
+export interface DurianpyWebsiteSponsorsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  websiteUrl?: T;
+  tier?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1166,7 +1200,7 @@ export interface DurianpyWebsiteHomepageConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "durianpy-website-cta-section".
+ * via the `definition` "durianpy-website-durianpy-website-cta-section".
  */
 export interface DurianpyWebsiteCtaSection {
   id: string;
