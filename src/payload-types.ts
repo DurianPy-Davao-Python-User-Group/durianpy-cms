@@ -104,10 +104,12 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
-    'homepage-config': HomepageConfig;
+    'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfig;
+    'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfig;
   };
   globalsSelect: {
-    'homepage-config': HomepageConfigSelect<false> | HomepageConfigSelect<true>;
+    'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
+    'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1101,9 +1103,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "homepage-config".
+ * via the `definition` "durianpy-website-homepage-config".
  */
-export interface HomepageConfig {
+export interface DurianpyWebsiteHomepageConfig {
   id: string;
   heroImageDesktop: string | Media;
   heroImageMobile: string | Media;
@@ -1115,13 +1117,55 @@ export interface HomepageConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "homepage-config_select".
+ * via the `definition` "durianpy-website-statistics-config".
  */
-export interface HomepageConfigSelect<T extends boolean = true> {
+export interface DurianpyWebsiteStatisticsConfig {
+  id: string;
+  /**
+   * Add stat blocks to show on the homepage
+   */
+  metrics?:
+    | {
+        label: string;
+        value: number;
+        /**
+         * Check this to make the stat block span 2 rows on the frontend.
+         */
+        large?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-homepage-config_select".
+ */
+export interface DurianpyWebsiteHomepageConfigSelect<T extends boolean = true> {
   heroImageDesktop?: T;
   heroImageMobile?: T;
   heroTitle?: T;
   heroSubtitle?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-statistics-config_select".
+ */
+export interface DurianpyWebsiteStatisticsConfigSelect<T extends boolean = true> {
+  metrics?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        large?: T;
+        id?: T;
+      };
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1149,7 +1193,7 @@ export interface TaskSchedulePublish {
       relationTo: 'sample';
       value: string | Sample;
     } | null;
-    global?: 'homepage-config' | null;
+    global?: string | null;
     user?: (string | null) | User;
   };
   output?: unknown;
