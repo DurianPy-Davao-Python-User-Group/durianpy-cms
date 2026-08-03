@@ -1,11 +1,12 @@
 import fs from 'fs'
 import path from 'path'
+import { COLLECTION_GROUPS } from '@/constants/collections'
 
 import type { Endpoint } from 'payload'
 
 import { getCollectionGroupItems } from '@/constants/collections'
 
-const GROUP_SLUG = 'durianpy-website' as const
+const GROUP_SLUG = COLLECTION_GROUPS.DURIANPY_WEBSITE
 
 function getCommentStartBefore(content: string, index: number): number {
   const commentEnd = content.lastIndexOf('*/', index)
