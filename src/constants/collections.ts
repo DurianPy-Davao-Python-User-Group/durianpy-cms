@@ -59,7 +59,7 @@ export function getCollectionGroupLabel(groupSlug: CollectionGroupSlug) {
 
 export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, CollectionSlug[]> = {
   'durianpy-website': [COLLECTIONS.DURIANPY_WEBSITE_EVENTS, COLLECTIONS.DURIANPY_WEBSITE_SPONSORS],
-  admin: ['users', 'service-accounts'],
+  admin: [COLLECTIONS.USERS, COLLECTIONS.SERVICE_ACCOUNTS],
 } as const
 
 export function getCollectionGroupItems(groupSlug: CollectionGroupSlug) {
