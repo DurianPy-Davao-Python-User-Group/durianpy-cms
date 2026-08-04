@@ -4,6 +4,7 @@ import { USER_ROLE_LABELS, USER_ROLES } from '@/constants/userRoles'
 import {
   COLLECTIONS,
   COLLECTION_FOR_PERMISSION_OPTIONS,
+  COLLECTION_GROUPS,
   COLLECTION_LABELS,
   getCollectionGroupLabel,
 } from '@/constants/collections'
@@ -17,10 +18,7 @@ export const ServiceAccounts: CollectionConfig = {
   slug: COLLECTIONS.SERVICE_ACCOUNTS,
   labels: COLLECTION_LABELS[COLLECTIONS.SERVICE_ACCOUNTS],
   access: {
-    admin: ({ req: { user } }) => {
-      const allowedRoles = Object.values(USER_ROLES)
-      return Boolean(user && user.role.some((role) => allowedRoles.includes(role)))
-    },
+    admin: anyAdmin,
     create: anyAdmin,
     delete: anyAdmin,
     read: adminOrSelf,
@@ -33,7 +31,7 @@ export const ServiceAccounts: CollectionConfig = {
       if (!user) return true
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
-    group: getCollectionGroupLabel('admin'),
+    group: getCollectionGroupLabel(COLLECTION_GROUPS.ADMIN),
   },
   auth: {
     useAPIKey: true,
