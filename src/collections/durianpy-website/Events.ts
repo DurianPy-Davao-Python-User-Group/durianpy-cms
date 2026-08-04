@@ -5,12 +5,12 @@ import type { AccessArgs, CollectionConfig } from 'payload'
 import type { CollectionBeforeChangeHook } from 'payload'
 
 const checkEventsAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, 'events', accessType)
+  checkCollectionAccess(access, COLLECTIONS.DURIANPY_WEBSITE_EVENTS, accessType)
 
 const ensureSingleFeatured: CollectionBeforeChangeHook = async ({ data, req, originalDoc }) => {
   if (data.isFeatured && data._status === 'published') {
     const { docs } = await req.payload.find({
-      collection: COLLECTIONS.EVENTS,
+      collection: COLLECTIONS.DURIANPY_WEBSITE_EVENTS,
       where: {
         isFeatured: { equals: true },
         id: { not_equals: originalDoc?.id },
@@ -21,7 +21,7 @@ const ensureSingleFeatured: CollectionBeforeChangeHook = async ({ data, req, ori
     await Promise.all(
       docs.map((doc) =>
         req.payload.update({
-          collection: COLLECTIONS.EVENTS,
+          collection: COLLECTIONS.DURIANPY_WEBSITE_EVENTS,
           id: doc.id,
           data: { isFeatured: false },
         }),
@@ -32,8 +32,8 @@ const ensureSingleFeatured: CollectionBeforeChangeHook = async ({ data, req, ori
 }
 
 export const Events: CollectionConfig = {
-  slug: 'events',
-  labels: COLLECTION_LABELS.events,
+  slug: COLLECTIONS.DURIANPY_WEBSITE_EVENTS,
+  labels: COLLECTION_LABELS[COLLECTIONS.DURIANPY_WEBSITE_EVENTS],
   access: {
     admin: checkEventsAccess('admin'),
     create: checkEventsAccess('create'),

@@ -71,7 +71,7 @@ export interface Config {
     categories: Category;
     users: User;
     sample: Sample;
-    events: Event;
+    'durianpy-website-events': DurianpyWebsiteEvent;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -91,7 +91,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     sample: SampleSelect<false> | SampleSelect<true>;
-    events: EventsSelect<false> | EventsSelect<true>;
+    'durianpy-website-events': DurianpyWebsiteEventsSelect<false> | DurianpyWebsiteEventsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -114,6 +114,9 @@ export interface Config {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
+  };
+  globalsSelect: {
+    'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
   };
   locale: null;
   widgets: {
@@ -303,7 +306,14 @@ export interface User {
   role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
   allowedCollections?:
     | {
-        collectionOrGroupSlug: 'admin' | 'durianpy-website' | 'categories' | 'media' | 'users' | 'sample' | 'events';
+        collectionOrGroupSlug:
+          | 'admin'
+          | 'durianpy-website'
+          | 'categories'
+          | 'media'
+          | 'users'
+          | 'sample'
+          | 'durianpy-website-events';
         permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -341,9 +351,9 @@ export interface Sample {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
+ * via the `definition` "durianpy-website-events".
  */
-export interface Event {
+export interface DurianpyWebsiteEvent {
   id: string;
   title: string;
   date: string;
@@ -682,8 +692,8 @@ export interface PayloadLockedDocument {
         value: string | Sample;
       } | null)
     | ({
-        relationTo: 'events';
-        value: string | Event;
+        relationTo: 'durianpy-website-events';
+        value: string | DurianpyWebsiteEvent;
       } | null)
     | ({
         relationTo: 'forms';
@@ -898,9 +908,9 @@ export interface SampleSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events_select".
+ * via the `definition` "durianpy-website-events_select".
  */
-export interface EventsSelect<T extends boolean = true> {
+export interface DurianpyWebsiteEventsSelect<T extends boolean = true> {
   title?: T;
   date?: T;
   location?: T;
@@ -1202,6 +1212,8 @@ export interface DurianpyWebsiteStatisticsConfig {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "durianpy-website-homepage-config_select".
  */
+ * via the `definition` "durianpy-website-homepage-config_select".
+ */
 export interface DurianpyWebsiteHomepageConfigSelect<T extends boolean = true> {
   heroImageDesktop?: T;
   heroImageMobile?: T;
@@ -1277,8 +1289,8 @@ export interface TaskSchedulePublish {
           value: string | Sample;
         } | null)
       | ({
-          relationTo: 'events';
-          value: string | Event;
+          relationTo: 'durianpy-website-events';
+          value: string | DurianpyWebsiteEvent;
         } | null);
     global?: string | null;
     user?: (string | null) | User;
