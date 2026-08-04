@@ -4,6 +4,8 @@
  * in code to avoid hardcoding strings throughout the codebase
  */
 
+import { GLOBALS, type GlobalSlug } from './globals'
+
 /**
  * The enum for collection slugs
  */
@@ -52,7 +54,7 @@ export function getCollectionGroupLabel(groupSlug: CollectionGroupSlug) {
 }
 
 export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, CollectionSlug[]> = {
-  'durianpy-website': [COLLECTIONS.DURIANPY_WEBSITE_EVENTS],
+  'durianpy-website': [COLLECTIONS.DURIANPY_WEBSITE_EVENTS, COLLECTIONS.DURIANPY_WEBSITE_SPONSORS],
   admin: ['users'],
 } as const
 
@@ -61,7 +63,7 @@ export function getCollectionGroupItems(groupSlug: CollectionGroupSlug) {
 }
 
 export type PermissionOption = {
-  slug: CollectionSlug | CollectionGroupSlug
+  slug: CollectionSlug | CollectionGroupSlug | GlobalSlug
   label: string
 }
 
@@ -78,10 +80,14 @@ export const COLLECTION_FOR_PERMISSION_OPTIONS: PermissionOption[] = [
   })),
 ] as const
 
-export function getCollectionSlugType(slug: CollectionSlug | CollectionGroupSlug) {
+export function getCollectionSlugType(slug: CollectionSlug | CollectionGroupSlug | GlobalSlug) {
   if (Object.values(COLLECTION_GROUPS).includes(slug as CollectionGroupSlug)) {
     return 'group'
-  } else if (Object.values(COLLECTIONS).includes(slug as CollectionSlug)) {
+  } else if (
+    [...Object.values(COLLECTIONS), ...Object.values(GLOBALS)].includes(
+      slug as CollectionSlug | GlobalSlug,
+    )
+  ) {
     return 'collection'
   } else {
     return

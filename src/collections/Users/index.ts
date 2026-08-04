@@ -10,6 +10,7 @@ import {
   COLLECTION_PERMISSIONS,
 } from '@/constants/collectionPermissions'
 import { adminOrSelf } from '@/access/adminOrSelf'
+import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
 
 const sendEmailOnUserCreate: CollectionAfterChangeHook<User> = ({ doc, operation, req }) => {
   if (operation === 'create') {
@@ -102,10 +103,16 @@ export const Users: CollectionConfig = {
           type: 'select',
           hasMany: false,
           required: true,
-          options: COLLECTION_FOR_PERMISSION_OPTIONS.map(({ slug, label }) => ({
-            value: slug,
-            label,
-          })),
+          options: [
+            ...COLLECTION_FOR_PERMISSION_OPTIONS.map(({ slug, label }) => ({
+              value: slug,
+              label,
+            })),
+            ...Object.values(GLOBALS).map((slug) => ({
+              value: slug,
+              label: GLOBAL_LABELS[slug].plural,
+            })),
+          ],
         },
         {
           name: 'permissions',

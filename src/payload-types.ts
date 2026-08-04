@@ -111,13 +111,13 @@ export interface Config {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfig;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSection;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfig;
-    carousel: Carousel;
+    'durianpy-website-carousel': DurianpyWebsiteCarousel;
   };
   globalsSelect: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
-    carousel: CarouselSelect<false> | CarouselSelect<true>;
+    'durianpy-website-carousel': DurianpyWebsiteCarouselSelect<false> | DurianpyWebsiteCarouselSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1243,9 +1243,9 @@ export interface DurianpyWebsiteStatisticsConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carousel".
+ * via the `definition` "durianpy-website-carousel".
  */
-export interface Carousel {
+export interface DurianpyWebsiteCarousel {
   id: string;
   title: string;
   subtitle: string;
@@ -1310,9 +1310,9 @@ export interface DurianpyWebsiteStatisticsConfigSelect<T extends boolean = true>
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carousel_select".
+ * via the `definition` "durianpy-website-carousel_select".
  */
-export interface CarouselSelect<T extends boolean = true> {
+export interface DurianpyWebsiteCarouselSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   photos?:

@@ -11,8 +11,6 @@ import { AccessType } from '@/constants/accessTypes'
 import { COLLECTION_PERMISSION_TO_ACCESS_TYPES } from '@/constants/collectionPermissions'
 import { GlobalSlug } from '@/constants/globals'
 
-type CollectionAccessSlug = CollectionSlug | 'carousel'
-
 export function checkCollectionAccess(
   { req }: AccessArgs<User>,
   collectionSlug: CollectionAccessSlug,
@@ -34,10 +32,6 @@ export function checkCollectionAccess(
     return false
   }
 
-  if (collectionSlug === 'carousel') {
-    return false
-  }
-
   return allowedCollections.some((assignment) => {
     const assignedSlug = assignment.collectionOrGroupSlug
     const slugType = getCollectionSlugType(assignedSlug)
@@ -45,7 +39,7 @@ export function checkCollectionAccess(
 
     if (slugType === 'group') {
       const groupItems = getCollectionGroupItems(assignedSlug as CollectionGroupSlug)
-      isApplicable = groupItems.includes(collectionSlug as CollectionSlug)
+      isApplicable = groupItems.includes(collectionSlug)
     } else if (slugType === 'collection') {
       isApplicable = assignedSlug === collectionSlug
     }
