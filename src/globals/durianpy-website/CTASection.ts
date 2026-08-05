@@ -10,7 +10,7 @@ const checkCTASectionAccess = (accessType?: AccessType) => (access: AccessArgs) 
   checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_CTA_SECTION, accessType)
 
 export const CTASection: GlobalConfig = {
-  slug: 'durianpy-website-cta-section',
+  slug: GLOBALS.DURIANPY_WEBSITE_CTA_SECTION,
   label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_CTA_SECTION].singular,
 
   admin: {
