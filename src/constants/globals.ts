@@ -14,6 +14,7 @@ export const GLOBAL_LABELS: Record<GlobalSlug, { singular: string; plural: strin
   [GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG]: {
     singular: 'Statistics Config',
     plural: 'Statistics Configs',
+  },
   [GLOBALS.DURIANPY_WEBSITE_CTA_SECTION]: {
     singular: 'CTA Section',
     plural: 'CTA Sections',

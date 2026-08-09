@@ -105,16 +105,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfig;
+    'durianpy-website-cta-section': DurianpyWebsiteCtaSection;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfig;
   };
   globalsSelect: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
-    'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
-    'durianpy-website-cta-section': DurianpyWebsiteCtaSection;
-  };
-  globalsSelect: {
-    'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
     'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
+    'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1122,6 +1119,23 @@ export interface DurianpyWebsiteHomepageConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-cta-section".
+ */
+export interface DurianpyWebsiteCtaSection {
+  id: string;
+  cards: {
+    link: string;
+    whiteText: string;
+    yellowText: string;
+    icon: string | Media;
+    id?: string | null;
+  }[];
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "durianpy-website-statistics-config".
  */
 export interface DurianpyWebsiteStatisticsConfig {
@@ -1140,17 +1154,6 @@ export interface DurianpyWebsiteStatisticsConfig {
         id?: string | null;
       }[]
     | null;
- * via the `definition` "durianpy-website-cta-section".
- */
-export interface DurianpyWebsiteCtaSection {
-  id: string;
-  cards: {
-    link: string;
-    whiteText: string;
-    yellowText: string;
-    icon: string | Media;
-    id?: string | null;
-  }[];
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1171,15 +1174,6 @@ export interface DurianpyWebsiteHomepageConfigSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "durianpy-website-statistics-config_select".
- */
-export interface DurianpyWebsiteStatisticsConfigSelect<T extends boolean = true> {
-  metrics?:
-    | T
-    | {
-        label?: T;
-        value?: T;
-        large?: T;
  * via the `definition` "durianpy-website-cta-section_select".
  */
 export interface DurianpyWebsiteCtaSectionSelect<T extends boolean = true> {
@@ -1190,6 +1184,24 @@ export interface DurianpyWebsiteCtaSectionSelect<T extends boolean = true> {
         whiteText?: T;
         yellowText?: T;
         icon?: T;
+        id?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-statistics-config_select".
+ */
+export interface DurianpyWebsiteStatisticsConfigSelect<T extends boolean = true> {
+  metrics?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        large?: T;
         id?: T;
       };
   _status?: T;
