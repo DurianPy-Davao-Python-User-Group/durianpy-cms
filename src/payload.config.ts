@@ -97,10 +97,8 @@ export default buildConfig({
       },
     }),
   }),
-  collections: [Media, Categories, Users, Sample],
-  globals: [HomepageConfig, CTASection, StatisticsConfig],
   collections: [Media, Categories, Users, Sample, Events],
-  globals: [HomepageConfig],
+  globals: [HomepageConfig, CTASection, StatisticsConfig],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
       const { origin } = new URL(url!)
