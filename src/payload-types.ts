@@ -315,7 +315,11 @@ export interface User {
           | 'users'
           | 'sample'
           | 'durianpy-website-events'
-          | 'durianpy-website-sponsors';
+          | 'durianpy-website-sponsors'
+          | 'durianpy-website-homepage-config'
+          | 'durianpy-website-statistics-config'
+          | 'durianpy-website-cta-section'
+          | 'durianpy-website-carousel';
         permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
