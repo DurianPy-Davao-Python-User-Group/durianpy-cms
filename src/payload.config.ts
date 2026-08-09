@@ -141,6 +141,7 @@ export default buildConfig({
             config: {
               region: process.env.AWS_REGION || 'ap-southeast-1',
             },
+            clientUploads: true,
             enabled: isProduction,
           }),
         ]
