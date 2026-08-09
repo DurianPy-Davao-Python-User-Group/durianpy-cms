@@ -14,7 +14,7 @@ export const getServerSideOrigin = () => {
   try {
     const { origin } = new URL(url)
     return origin
-  } catch (e) {
+  } catch (_e) {
     return url
   }
 }

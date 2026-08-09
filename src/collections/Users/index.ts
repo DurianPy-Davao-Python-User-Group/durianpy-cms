@@ -12,6 +12,8 @@ import {
 import { adminOrSelf } from '@/access/adminOrSelf'
 import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
 
+import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
+
 const sendEmailOnUserCreate: CollectionAfterChangeHook<User> = ({ doc, operation, req }) => {
   if (operation === 'create') {
     const email = doc['email']
