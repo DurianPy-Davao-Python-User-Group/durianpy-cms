@@ -73,6 +73,7 @@ export interface Config {
     sample: Sample;
     'durianpy-website-events': DurianpyWebsiteEvent;
     'durianpy-website-sponsors': DurianpyWebsiteSponsor;
+    'durianpy-website-sigs': DurianpyWebsiteSig;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -94,6 +95,7 @@ export interface Config {
     sample: SampleSelect<false> | SampleSelect<true>;
     'durianpy-website-events': DurianpyWebsiteEventsSelect<false> | DurianpyWebsiteEventsSelect<true>;
     'durianpy-website-sponsors': DurianpyWebsiteSponsorsSelect<false> | DurianpyWebsiteSponsorsSelect<true>;
+    'durianpy-website-sigs': DurianpyWebsiteSigsSelect<false> | DurianpyWebsiteSigsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -316,6 +318,7 @@ export interface User {
           | 'sample'
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
+          | 'durianpy-website-sigs'
           | 'durianpy-website-homepage-config'
           | 'durianpy-website-statistics-config'
           | 'durianpy-website-cta-section'
@@ -384,6 +387,22 @@ export interface DurianpyWebsiteSponsor {
   logo: string | Media;
   websiteUrl?: string | null;
   tier: 'gold' | 'silver' | 'venue' | 'community';
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-sigs".
+ */
+export interface DurianpyWebsiteSig {
+  id: string;
+  icon: string | Media;
+  title: string;
+  /**
+   * Uncheck to hide defunct SIGs without deleting data
+   */
+  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -720,6 +739,10 @@ export interface PayloadLockedDocument {
         value: string | DurianpyWebsiteSponsor;
       } | null)
     | ({
+        relationTo: 'durianpy-website-sigs';
+        value: string | DurianpyWebsiteSig;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: string | Form;
       } | null)
@@ -954,6 +977,18 @@ export interface DurianpyWebsiteSponsorsSelect<T extends boolean = true> {
   logo?: T;
   websiteUrl?: T;
   tier?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-sigs_select".
+ */
+export interface DurianpyWebsiteSigsSelect<T extends boolean = true> {
+  icon?: T;
+  title?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1356,6 +1391,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'durianpy-website-events';
           value: string | DurianpyWebsiteEvent;
+        } | null)
+      | ({
+          relationTo: 'durianpy-website-sigs';
+          value: string | DurianpyWebsiteSig;
         } | null);
     global?: string | null;
     user?: (string | null) | User;
