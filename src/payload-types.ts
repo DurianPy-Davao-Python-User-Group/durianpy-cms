@@ -115,9 +115,6 @@ export interface Config {
     'durianpy-website-cta-section': DurianpyWebsiteCtaSectionSelect<false> | DurianpyWebsiteCtaSectionSelect<true>;
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
   };
-  globalsSelect: {
-    'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
-  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -1212,8 +1209,6 @@ export interface DurianpyWebsiteStatisticsConfig {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "durianpy-website-homepage-config_select".
  */
- * via the `definition` "durianpy-website-homepage-config_select".
- */
 export interface DurianpyWebsiteHomepageConfigSelect<T extends boolean = true> {
   heroImageDesktop?: T;
   heroImageMobile?: T;
@@ -1279,10 +1274,6 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'sample';
-      value: string | Sample;
-    } | null;
     doc?:
       | ({
           relationTo: 'sample';
