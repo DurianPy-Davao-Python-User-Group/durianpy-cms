@@ -1,9 +1,19 @@
 import type { CollectionSlug, Payload, PayloadRequest } from 'payload'
 
-import { seedUsers } from '../../seed/collections/Users'
-import { seedMedia } from '../../seed/collections/Media'
-import { seedCategories } from '../../seed/collections/Categories'
-import { seedForms } from '../../seed/collections/Forms'
+import { seedUsers } from '../../seed/admin/collections/Users'
+import { seedServiceAccounts } from '../../seed/admin/collections/ServiceAccounts'
+import { seedCategories } from '../../seed/default/collections/Categories'
+import { seedEvents } from '../../seed/durianpy-website/collections/Events'
+import { seedSIGs } from '../../seed/durianpy-website/collections/SIGs'
+import { seedSponsors } from '../../seed/durianpy-website/collections/Sponsors'
+import { seedSample } from '../../seed/durianpy-website/collections/sample-website-collection.index'
+
+import { seedCTASection } from '../../seed/durianpy-website/globals/CTASection'
+import { seedCarousel } from '../../seed/durianpy-website/globals/Carousel'
+import { seedCodeOfConduct } from '../../seed/durianpy-website/globals/CodeOfConduct'
+import { seedHomepageConfig } from '../../seed/durianpy-website/globals/HomepageConfig'
+import { seedStatisticsConfig } from '../../seed/durianpy-website/globals/StatisticsConfig'
+
 import { COLLECTIONS } from '@/constants/collections'
 
 const collections: CollectionSlug[] = Object.values(COLLECTIONS).map((x) => x)
@@ -44,12 +54,25 @@ export const seed = async ({
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
-  await seedUsers({ payload })
-  await seedMedia({ payload })
+  payload.logger.info(`— Seeding Admin...`)
+  await seedUsers({ payload, req })
+  await seedServiceAccounts({ payload, req })
 
-  await seedCategories({ payload })
+  payload.logger.info(`— Seeding Default...`)
+  await seedCategories({ payload, req })
 
-  await seedForms({ payload })
+  payload.logger.info(`— Seeding DurianPy Website Collections...`)
+  await seedEvents({ payload, req })
+  await seedSIGs({ payload, req })
+  await seedSponsors({ payload, req })
+  await seedSample({ payload, req })
+
+  payload.logger.info(`— Seeding DurianPy Website Globals...`)
+  await seedCTASection({ payload, req })
+  await seedCarousel({ payload, req })
+  await seedCodeOfConduct({ payload, req })
+  await seedHomepageConfig({ payload, req })
+  await seedStatisticsConfig({ payload, req })
 
   payload.logger.info('Seeded database successfully!')
 }
