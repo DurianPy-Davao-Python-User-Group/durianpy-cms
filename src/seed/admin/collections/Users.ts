@@ -1,6 +1,6 @@
-import { Payload } from 'payload'
+import { Payload, PayloadRequest } from 'payload'
 
-export async function seedUsers({ payload }: { payload: Payload }) {
+export async function seedUsers({ payload, req }: { payload: Payload; req?: PayloadRequest }) {
   payload.logger.info(`— Seeding demo author and user...`)
 
   await payload.delete({
@@ -23,6 +23,7 @@ export async function seedUsers({ payload }: { payload: Payload }) {
       role: ['admin'],
       password: 'password',
     },
+    req,
   })
 
   return demoAuthor
