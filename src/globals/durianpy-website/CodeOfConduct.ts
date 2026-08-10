@@ -1,5 +1,5 @@
 import { anyone } from '@/access/anyone'
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { AccessType } from '@/constants/accessTypes'
 import {
   FixedToolbarFeature,
@@ -9,22 +9,22 @@ import {
   StrikethroughFeature,
 } from '@payloadcms/richtext-lexical'
 import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
-import { getCollectionGroupLabel, COLLECTION_GROUPS } from '@/constants/collections'
 import type { AccessArgs, GlobalConfig } from 'payload'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 
 const checkCodeOfConductAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT, accessType)
+  checkResourceAccess(access, GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT, accessType)
 
 export const CodeOfConduct: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT,
-  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT].singular,
+  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT],
 
   access: {
     read: anyone,
     update: checkCodeOfConductAccess('update'),
   },
   admin: {
-    group: getCollectionGroupLabel(COLLECTION_GROUPS.DURIANPY_WEBSITE),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
 
   versions: {

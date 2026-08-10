@@ -1,16 +1,16 @@
 import type { CollectionConfig } from 'payload'
 import { anyAdmin } from '@/access/anyAdmin'
 import { USER_ROLE_LABELS, USER_ROLES } from '@/constants/userRoles'
-import { COLLECTION_FOR_PERMISSION_OPTIONS, getCollectionGroupLabel } from '@/constants/collections'
 import WelcomeEmail from '@/email/templates/WelcomeEmail'
 import type { CollectionAfterChangeHook } from 'payload'
 import type { User } from '@/payload-types'
 import {
-  COLLECTION_PERMISSION_LABELS,
-  COLLECTION_PERMISSIONS,
-} from '@/constants/collectionPermissions'
+  PERMISSION_LABELS,
+  PERMISSION_RESOURCE_OPTIONS,
+  PERMISSIONS,
+} from '@/constants/permissions'
 import { adminOrSelf } from '@/access/adminOrSelf'
-import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 
 const sendEmailOnUserCreate: CollectionAfterChangeHook<User> = ({ doc, operation, req }) => {
   if (operation === 'create') {
@@ -51,7 +51,7 @@ export const Users: CollectionConfig = {
       if (!user) return true
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
-    group: getCollectionGroupLabel('admin'),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.ADMIN),
   },
   auth: {
     cookies: {
@@ -91,7 +91,7 @@ export const Users: CollectionConfig = {
       })),
     },
     {
-      name: 'allowedCollections',
+      name: 'permissions',
       type: 'array',
       access: {
         create: ({ req }) => anyAdmin({ req }),
@@ -99,28 +99,24 @@ export const Users: CollectionConfig = {
       },
       fields: [
         {
-          name: 'collectionOrGroupSlug',
+          name: 'resource',
           type: 'select',
           hasMany: false,
           required: true,
           options: [
-            ...COLLECTION_FOR_PERMISSION_OPTIONS.map(({ slug, label }) => ({
+            ...PERMISSION_RESOURCE_OPTIONS.map(({ slug, label }) => ({
               value: slug,
               label,
-            })),
-            ...Object.values(GLOBALS).map((slug) => ({
-              value: slug,
-              label: GLOBAL_LABELS[slug].plural,
             })),
           ],
         },
         {
-          name: 'permissions',
+          name: 'accessLevel',
           type: 'radio',
           required: true,
-          options: Object.values(COLLECTION_PERMISSIONS).map((permission) => ({
+          options: Object.values(PERMISSIONS).map((permission) => ({
             value: permission,
-            label: COLLECTION_PERMISSION_LABELS[permission],
+            label: PERMISSION_LABELS[permission],
           })),
         },
       ],

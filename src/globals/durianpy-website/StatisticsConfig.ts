@@ -1,18 +1,18 @@
 import { GlobalConfig, AccessArgs } from 'payload'
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
-import { getCollectionGroupLabel } from '@/constants/collections'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 
 type AccessType = 'create' | 'read' | 'update' | 'delete'
 
 const checkStatisticsConfigAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG, accessType)
+  checkResourceAccess(access, GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG, accessType)
 
 export const StatisticsConfig: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG,
-  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG].singular,
+  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG],
   admin: {
-    group: getCollectionGroupLabel('durianpy-website'),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
   versions: {
     drafts: true,

@@ -1,16 +1,12 @@
 import { anyone } from '@/access/anyone'
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { AccessType } from '@/constants/accessTypes'
-import {
-  COLLECTIONS,
-  COLLECTION_LABELS,
-  getCollectionGroupLabel,
-  COLLECTION_GROUPS,
-} from '@/constants/collections'
+import { COLLECTIONS, COLLECTION_LABELS } from '@/constants/collections'
+import { SIDEBAR_GROUPS, getSidebarGroupLabel } from '@/constants/sidebarGroup'
 import type { AccessArgs, CollectionConfig } from 'payload'
 
 const checkSponsorsAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, COLLECTIONS.DURIANPY_WEBSITE_SPONSORS, accessType)
+  checkResourceAccess(access, COLLECTIONS.DURIANPY_WEBSITE_SPONSORS, accessType)
 
 export const Sponsors: CollectionConfig = {
   slug: COLLECTIONS.DURIANPY_WEBSITE_SPONSORS,
@@ -25,7 +21,7 @@ export const Sponsors: CollectionConfig = {
 
   admin: {
     defaultColumns: ['name', 'logo', 'websiteUrl', 'tier'],
-    group: getCollectionGroupLabel(COLLECTION_GROUPS.DURIANPY_WEBSITE),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
   versions: {
     drafts: true,

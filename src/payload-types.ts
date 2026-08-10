@@ -330,11 +330,16 @@ export interface User {
   firstName: string;
   lastName: string;
   role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
-  allowedCollections?:
+  permissions?:
     | {
-        collectionOrGroupSlug:
+        resource:
           | 'admin'
           | 'durianpy-website'
+          | 'durianpy-website-homepage-config'
+          | 'durianpy-website-statistics-config'
+          | 'durianpy-website-cta-section'
+          | 'durianpy-website-carousel'
+          | 'durianpy-website-code-of-conduct'
           | 'categories'
           | 'media'
           | 'users'
@@ -342,13 +347,8 @@ export interface User {
           | 'service-accounts'
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
-          | 'durianpy-website-sigs'
-          | 'durianpy-website-homepage-config'
-          | 'durianpy-website-statistics-config'
-          | 'durianpy-website-cta-section'
-          | 'durianpy-website-carousel'
-          | 'durianpy-website-code-of-conduct';
-        permissions: 'read' | 'read-write' | 'full-access';
+          | 'durianpy-website-sigs';
+        accessLevel: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
     | null;
@@ -391,11 +391,16 @@ export interface ServiceAccount {
   id: string;
   name: string;
   role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
-  allowedCollections?:
+  permissions?:
     | {
-        collectionOrGroupSlug:
+        resource:
           | 'admin'
           | 'durianpy-website'
+          | 'durianpy-website-homepage-config'
+          | 'durianpy-website-statistics-config'
+          | 'durianpy-website-cta-section'
+          | 'durianpy-website-carousel'
+          | 'durianpy-website-code-of-conduct'
           | 'categories'
           | 'media'
           | 'users'
@@ -404,7 +409,7 @@ export interface ServiceAccount {
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
           | 'durianpy-website-sigs';
-        permissions: 'read' | 'read-write' | 'full-access';
+        accessLevel: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
     | null;
@@ -413,21 +418,6 @@ export interface ServiceAccount {
   enableAPIKey?: boolean | null;
   apiKey?: string | null;
   apiKeyIndex?: string | null;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
   collection: 'service-accounts';
 }
 /**
@@ -1004,11 +994,11 @@ export interface UsersSelect<T extends boolean = true> {
   firstName?: T;
   lastName?: T;
   role?: T;
-  allowedCollections?:
+  permissions?:
     | T
     | {
-        collectionOrGroupSlug?: T;
-        permissions?: T;
+        resource?: T;
+        accessLevel?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1046,11 +1036,11 @@ export interface SampleSelect<T extends boolean = true> {
 export interface ServiceAccountsSelect<T extends boolean = true> {
   name?: T;
   role?: T;
-  allowedCollections?:
+  permissions?:
     | T
     | {
-        collectionOrGroupSlug?: T;
-        permissions?: T;
+        resource?: T;
+        accessLevel?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1058,20 +1048,6 @@ export interface ServiceAccountsSelect<T extends boolean = true> {
   enableAPIKey?: T;
   apiKey?: T;
   apiKeyIndex?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
