@@ -1123,7 +1123,6 @@ For deeper exploration of specific topics, refer to the context files located in
     - Best practices
 
 13. **`components.md`** - Custom Components
-
     - Component types (Root, Collection, Global, Field)
     - Server vs Client Components
     - Component paths and definition
