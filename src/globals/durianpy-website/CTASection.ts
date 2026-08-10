@@ -1,20 +1,20 @@
 import { AccessArgs, GlobalConfig } from 'payload'
 
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
-import { getCollectionGroupLabel } from '@/constants/collections'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { anyone } from '@/access/anyone'
 import { AccessType } from '@/constants/accessTypes'
 import { GLOBAL_LABELS, GLOBALS } from '@/constants/globals'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 
 const checkCTASectionAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_CTA_SECTION, accessType)
+  checkResourceAccess(access, GLOBALS.DURIANPY_WEBSITE_CTA_SECTION, accessType)
 
 export const CTASection: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_CTA_SECTION,
-  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_CTA_SECTION].singular,
+  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_CTA_SECTION],
 
   admin: {
-    group: getCollectionGroupLabel('durianpy-website'),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
 
   access: {

@@ -1,18 +1,14 @@
 import type { CollectionConfig } from 'payload'
 import { anyAdmin } from '@/access/anyAdmin'
 import { USER_ROLE_LABELS, USER_ROLES } from '@/constants/userRoles'
-import {
-  COLLECTIONS,
-  COLLECTION_FOR_PERMISSION_OPTIONS,
-  COLLECTION_GROUPS,
-  COLLECTION_LABELS,
-  getCollectionGroupLabel,
-} from '@/constants/collections'
-import {
-  COLLECTION_PERMISSION_LABELS,
-  COLLECTION_PERMISSIONS,
-} from '@/constants/collectionPermissions'
+import { COLLECTIONS, COLLECTION_LABELS } from '@/constants/collections'
 import { adminOrSelf } from '@/access/adminOrSelf'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
+import {
+  PERMISSION_LABELS,
+  PERMISSION_RESOURCE_OPTIONS,
+  PERMISSIONS,
+} from '@/constants/permissions'
 
 export const ServiceAccounts: CollectionConfig = {
   slug: COLLECTIONS.SERVICE_ACCOUNTS,
@@ -31,10 +27,11 @@ export const ServiceAccounts: CollectionConfig = {
       if (!user) return true
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
-    group: getCollectionGroupLabel(COLLECTION_GROUPS.ADMIN),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.ADMIN),
   },
   auth: {
     useAPIKey: true,
+    disableLocalStrategy: true,
   },
   fields: [
     {
@@ -59,7 +56,7 @@ export const ServiceAccounts: CollectionConfig = {
       })),
     },
     {
-      name: 'allowedCollections',
+      name: 'permissions',
       type: 'array',
       access: {
         create: ({ req }) => anyAdmin({ req }),
@@ -67,22 +64,22 @@ export const ServiceAccounts: CollectionConfig = {
       },
       fields: [
         {
-          name: 'collectionOrGroupSlug',
+          name: 'resource',
           type: 'select',
           hasMany: false,
           required: true,
-          options: COLLECTION_FOR_PERMISSION_OPTIONS.map(({ slug, label }) => ({
+          options: PERMISSION_RESOURCE_OPTIONS.map(({ slug, label }) => ({
             value: slug,
             label,
           })),
         },
         {
-          name: 'permissions',
+          name: 'accessLevel',
           type: 'radio',
           required: true,
-          options: Object.values(COLLECTION_PERMISSIONS).map((permission) => ({
+          options: Object.values(PERMISSIONS).map((permission) => ({
             value: permission,
-            label: COLLECTION_PERMISSION_LABELS[permission],
+            label: PERMISSION_LABELS[permission],
           })),
         },
       ],

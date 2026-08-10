@@ -1,11 +1,12 @@
 import { anyone } from '@/access/anyone'
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { AccessType } from '@/constants/accessTypes'
-import { COLLECTION_LABELS, getCollectionGroupLabel } from '@/constants/collections'
+import { COLLECTION_LABELS } from '@/constants/collections'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 import type { AccessArgs, CollectionConfig } from 'payload'
 
 const checkSampleAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, 'sample', accessType)
+  checkResourceAccess(access, 'sample', accessType)
 
 export const Sample: CollectionConfig = {
   slug: 'sample',
@@ -20,7 +21,7 @@ export const Sample: CollectionConfig = {
 
   admin: {
     defaultColumns: ['firstName'],
-    group: getCollectionGroupLabel('durianpy-website'),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
   versions: {
     drafts: {

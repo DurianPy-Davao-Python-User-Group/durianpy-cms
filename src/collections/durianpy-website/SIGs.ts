@@ -1,16 +1,12 @@
 import { anyone } from '@/access/anyone'
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { AccessType } from '@/constants/accessTypes'
-import {
-  COLLECTION_LABELS,
-  getCollectionGroupLabel,
-  COLLECTION_GROUPS,
-  COLLECTIONS,
-} from '@/constants/collections'
+import { COLLECTION_LABELS, COLLECTIONS } from '@/constants/collections'
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 import type { AccessArgs, CollectionConfig } from 'payload'
 
 const checkSIGsAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, COLLECTIONS.DURIANPY_WEBSITE_SIGS, accessType)
+  checkResourceAccess(access, COLLECTIONS.DURIANPY_WEBSITE_SIGS, accessType)
 
 export const SIGs: CollectionConfig = {
   slug: COLLECTIONS.DURIANPY_WEBSITE_SIGS,
@@ -25,7 +21,7 @@ export const SIGs: CollectionConfig = {
 
   admin: {
     defaultColumns: ['title', 'icon', 'isActive', 'createdAt'],
-    group: getCollectionGroupLabel(COLLECTION_GROUPS.DURIANPY_WEBSITE),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
   versions: {
     drafts: {
