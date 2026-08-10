@@ -13,7 +13,8 @@ const NEXT_PUBLIC_SERVER_URL =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000')
 
-const isProduction = process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
+const isProduction =
+  process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
 
 const nextConfig: NextConfig = {
   output: 'standalone',

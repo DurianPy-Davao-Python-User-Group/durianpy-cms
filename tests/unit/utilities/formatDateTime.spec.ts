@@ -11,17 +11,17 @@ describe('formatDateTime', () => {
     const testDate = new Date(2023, 10, 15) // Nov 15, 2023
     expect(formatDateTime(testDate.toISOString())).toBe('11/15/2023')
   })
-  
+
   it('should default to current date if timestamp is empty', () => {
     const now = new Date()
     const months = now.getMonth()
     const days = now.getDate()
-    
+
     const MM = months + 1 < 10 ? `0${months + 1}` : months + 1
     const DD = days < 10 ? `0${days}` : days
     const YYYY = now.getFullYear()
     const expected = `${MM}/${DD}/${YYYY}`
-    
+
     expect(formatDateTime('')).toBe(expected)
   })
 })
