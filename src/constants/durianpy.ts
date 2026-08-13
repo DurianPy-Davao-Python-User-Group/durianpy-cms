@@ -4,6 +4,7 @@ export const DURIANPY_WEBSITE_GLOBALS = {
   DURIANPY_WEBSITE_CTA_SECTION: 'durianpy-website-cta-section',
   DURIANPY_WEBSITE_CAROUSEL: 'durianpy-website-carousel',
   DURIANPY_WEBSITE_CODE_OF_CONDUCT: 'durianpy-website-code-of-conduct',
+  DURIANPY_WEBSITE_ORGANIZATION_STATUS: 'durianpy-website-organization-status',
 } as const
 
 export type DurianpyWebsiteGlobalSlug =
@@ -15,6 +16,7 @@ export const DURIANPY_WEBSITE_GLOBALS_LABELS: Record<DurianpyWebsiteGlobalSlug, 
   [DURIANPY_WEBSITE_GLOBALS.DURIANPY_WEBSITE_CTA_SECTION]: 'CTA Section',
   [DURIANPY_WEBSITE_GLOBALS.DURIANPY_WEBSITE_CAROUSEL]: 'Carousel',
   [DURIANPY_WEBSITE_GLOBALS.DURIANPY_WEBSITE_CODE_OF_CONDUCT]: 'Code of Conduct',
+  [DURIANPY_WEBSITE_GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS]: 'Organization Status',
 }
 
 export const DURIANPY_WEBSITE_COLLECTIONS = {
