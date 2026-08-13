@@ -55,10 +55,15 @@ export function getCollectionGroupLabel(groupSlug: CollectionGroupSlug) {
   return COLLECTION_GROUPS_LABEL[groupSlug]
 }
 
-export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, CollectionSlug[]> = {
-  'durianpy-website': [COLLECTIONS.DURIANPY_WEBSITE_EVENTS, COLLECTIONS.DURIANPY_WEBSITE_SPONSORS],
-  admin: ['users'],
-} as const
+export const COLLECTION_GROUP_ITEMS: Record<CollectionGroupSlug, (CollectionSlug | GlobalSlug)[]> =
+  {
+    'durianpy-website': [
+      COLLECTIONS.DURIANPY_WEBSITE_EVENTS,
+      COLLECTIONS.DURIANPY_WEBSITE_SPONSORS,
+      GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS,
+    ],
+    admin: ['users'],
+  } as const
 
 export function getCollectionGroupItems(groupSlug: CollectionGroupSlug) {
   return COLLECTION_GROUP_ITEMS[groupSlug]
