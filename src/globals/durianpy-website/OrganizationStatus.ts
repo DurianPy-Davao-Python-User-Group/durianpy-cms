@@ -18,7 +18,7 @@ export const OrganizationStatus: GlobalConfig = {
 
   access: {
     read: (access: AccessArgs) => {
-      if (access.req?.draft) {
+      if ((access.req as any)?.draft) {
         return checkOrganizationStatusAccess('read')(access)
       }
       return anyone(access)
