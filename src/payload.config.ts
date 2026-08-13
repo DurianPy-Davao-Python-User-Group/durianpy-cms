@@ -24,6 +24,7 @@ import { Carousel } from './globals/durianpy-website/Carousel'
 import { SIGs } from './collections/durianpy-website/SIGs'
 import { CodeOfConduct } from './globals/durianpy-website/CodeOfConduct'
 import { durianpyWebsiteTypesEndpoint } from './endpoints/durianpy-website-types'
+import { OrganizationStatus } from './globals/durianpy-website/OrganizationStatus'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -105,7 +106,14 @@ export default buildConfig({
   }),
   collections: [Media, Categories, Users, Sample, ServiceAccounts, Events, Sponsors, SIGs],
   endpoints: [durianpyWebsiteTypesEndpoint],
-  globals: [HomepageConfig, CTASection, StatisticsConfig, Carousel, CodeOfConduct],
+  globals: [
+    HomepageConfig,
+    CTASection,
+    StatisticsConfig,
+    Carousel,
+    CodeOfConduct,
+    OrganizationStatus,
+  ],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
     try {
       const { origin } = new URL(url!)
