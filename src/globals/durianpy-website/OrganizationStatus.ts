@@ -34,7 +34,7 @@ export const OrganizationStatus: GlobalConfig = {
       },
       schedulePublish: true,
     },
-    maxPerDoc: 50,
+    max: 50,
   },
 
   fields: [
