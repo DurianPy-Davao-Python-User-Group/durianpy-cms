@@ -115,6 +115,7 @@ export interface Config {
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfig;
     'durianpy-website-carousel': DurianpyWebsiteCarousel;
     'durianpy-website-code-of-conduct': DurianpyWebsiteCodeOfConduct;
+    'durianpy-website-organization-status': DurianpyWebsiteOrganizationStatus;
   };
   globalsSelect: {
     'durianpy-website-homepage-config': DurianpyWebsiteHomepageConfigSelect<false> | DurianpyWebsiteHomepageConfigSelect<true>;
@@ -122,6 +123,7 @@ export interface Config {
     'durianpy-website-statistics-config': DurianpyWebsiteStatisticsConfigSelect<false> | DurianpyWebsiteStatisticsConfigSelect<true>;
     'durianpy-website-carousel': DurianpyWebsiteCarouselSelect<false> | DurianpyWebsiteCarouselSelect<true>;
     'durianpy-website-code-of-conduct': DurianpyWebsiteCodeOfConductSelect<false> | DurianpyWebsiteCodeOfConductSelect<true>;
+    'durianpy-website-organization-status': DurianpyWebsiteOrganizationStatusSelect<false> | DurianpyWebsiteOrganizationStatusSelect<true>;
   };
   locale: null;
   widgets: {
@@ -325,7 +327,8 @@ export interface User {
           | 'durianpy-website-statistics-config'
           | 'durianpy-website-cta-section'
           | 'durianpy-website-carousel'
-          | 'durianpy-website-code-of-conduct';
+          | 'durianpy-website-code-of-conduct'
+          | 'durianpy-website-organization-status';
         permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -1330,6 +1333,21 @@ export interface DurianpyWebsiteCodeOfConduct {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-organization-status".
+ */
+export interface DurianpyWebsiteOrganizationStatus {
+  id: string;
+  /**
+   * Toggle visibility of the PSF banner
+   */
+  isPSFPartner?: boolean | null;
+  psfPartnerLogo?: (string | null) | Media;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "durianpy-website-homepage-config_select".
  */
 export interface DurianpyWebsiteHomepageConfigSelect<T extends boolean = true> {
@@ -1411,6 +1429,18 @@ export interface DurianpyWebsiteCodeOfConductSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-organization-status_select".
+ */
+export interface DurianpyWebsiteOrganizationStatusSelect<T extends boolean = true> {
+  isPSFPartner?: T;
+  psfPartnerLogo?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1440,7 +1470,7 @@ export interface TaskSchedulePublish {
           relationTo: 'durianpy-website-sigs';
           value: string | DurianpyWebsiteSig;
         } | null);
-    global?: string | null;
+    global?: 'durianpy-website-organization-status' | null;
     user?: (string | null) | User;
   };
   output?: unknown;
