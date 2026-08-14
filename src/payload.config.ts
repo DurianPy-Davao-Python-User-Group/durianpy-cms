@@ -23,6 +23,7 @@ import { Sponsors } from './collections/durianpy-website/Sponsors'
 import { Carousel } from './globals/durianpy-website/Carousel'
 import { SIGs } from './collections/durianpy-website/SIGs'
 import { CodeOfConduct } from './globals/durianpy-website/CodeOfConduct'
+import { Partners } from './collections/durianpy-website/Partners'
 import { durianpyWebsiteTypesEndpoint } from './endpoints/durianpy-website-types'
 
 const filename = fileURLToPath(import.meta.url)
@@ -103,7 +104,17 @@ export default buildConfig({
       },
     }),
   }),
-  collections: [Media, Categories, Users, Sample, ServiceAccounts, Events, Sponsors, SIGs],
+  collections: [
+    Media,
+    Categories,
+    Users,
+    Sample,
+    ServiceAccounts,
+    Events,
+    Sponsors,
+    SIGs,
+    Partners,
+  ],
   endpoints: [durianpyWebsiteTypesEndpoint],
   globals: [HomepageConfig, CTASection, StatisticsConfig, Carousel, CodeOfConduct],
   cors: [getServerSideOrigin()].filter(Boolean).map((url) => {
