@@ -64,7 +64,6 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
-    'service-accounts': ServiceAccountAuthOperations;
   };
   blocks: {};
   collections: {
@@ -72,10 +71,10 @@ export interface Config {
     categories: Category;
     users: User;
     sample: Sample;
-    'service-accounts': ServiceAccount;
     'durianpy-website-events': DurianpyWebsiteEvent;
     'durianpy-website-sponsors': DurianpyWebsiteSponsor;
     'durianpy-website-sigs': DurianpyWebsiteSig;
+    'durianpy-website-partners': DurianpyWebsitePartner;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -95,10 +94,10 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     sample: SampleSelect<false> | SampleSelect<true>;
-    'service-accounts': ServiceAccountsSelect<false> | ServiceAccountsSelect<true>;
     'durianpy-website-events': DurianpyWebsiteEventsSelect<false> | DurianpyWebsiteEventsSelect<true>;
     'durianpy-website-sponsors': DurianpyWebsiteSponsorsSelect<false> | DurianpyWebsiteSponsorsSelect<true>;
     'durianpy-website-sigs': DurianpyWebsiteSigsSelect<false> | DurianpyWebsiteSigsSelect<true>;
+    'durianpy-website-partners': DurianpyWebsitePartnersSelect<false> | DurianpyWebsitePartnersSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -130,7 +129,7 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User | ServiceAccount;
+  user: User;
   jobs: {
     tasks: {
       schedulePublish: TaskSchedulePublish;
@@ -143,24 +142,6 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
-  registerFirstUser: {
-    email: string;
-    password: string;
-  };
-  unlock: {
-    email: string;
-    password: string;
-  };
-}
-export interface ServiceAccountAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -330,25 +311,25 @@ export interface User {
   firstName: string;
   lastName: string;
   role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
-  permissions?:
+  allowedCollections?:
     | {
-        resource:
+        collectionOrGroupSlug:
           | 'admin'
           | 'durianpy-website'
-          | 'durianpy-website-homepage-config'
-          | 'durianpy-website-statistics-config'
-          | 'durianpy-website-cta-section'
-          | 'durianpy-website-carousel'
-          | 'durianpy-website-code-of-conduct'
           | 'categories'
           | 'media'
           | 'users'
           | 'sample'
-          | 'service-accounts'
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
-          | 'durianpy-website-sigs';
-        accessLevel: 'read' | 'read-write' | 'full-access';
+          | 'durianpy-website-sigs'
+          | 'durianpy-website-partners'
+          | 'durianpy-website-homepage-config'
+          | 'durianpy-website-statistics-config'
+          | 'durianpy-website-cta-section'
+          | 'durianpy-website-carousel'
+          | 'durianpy-website-code-of-conduct';
+        permissions: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
     | null;
@@ -382,42 +363,6 @@ export interface Sample {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "service-accounts".
- */
-export interface ServiceAccount {
-  id: string;
-  name: string;
-  permissions?:
-    | {
-        resource:
-          | 'admin'
-          | 'durianpy-website'
-          | 'durianpy-website-homepage-config'
-          | 'durianpy-website-statistics-config'
-          | 'durianpy-website-cta-section'
-          | 'durianpy-website-carousel'
-          | 'durianpy-website-code-of-conduct'
-          | 'categories'
-          | 'media'
-          | 'users'
-          | 'sample'
-          | 'service-accounts'
-          | 'durianpy-website-events'
-          | 'durianpy-website-sponsors'
-          | 'durianpy-website-sigs';
-        accessLevel: 'read' | 'read-write' | 'full-access';
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
-  collection: 'service-accounts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -464,6 +409,19 @@ export interface DurianpyWebsiteSig {
    * Uncheck to hide defunct SIGs without deleting data
    */
   isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-partners".
+ */
+export interface DurianpyWebsitePartner {
+  id: string;
+  name: string;
+  logo: string | Media;
+  websiteUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -792,10 +750,6 @@ export interface PayloadLockedDocument {
         value: string | Sample;
       } | null)
     | ({
-        relationTo: 'service-accounts';
-        value: string | ServiceAccount;
-      } | null)
-    | ({
         relationTo: 'durianpy-website-events';
         value: string | DurianpyWebsiteEvent;
       } | null)
@@ -806,6 +760,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'durianpy-website-sigs';
         value: string | DurianpyWebsiteSig;
+      } | null)
+    | ({
+        relationTo: 'durianpy-website-partners';
+        value: string | DurianpyWebsitePartner;
       } | null)
     | ({
         relationTo: 'forms';
@@ -820,15 +778,10 @@ export interface PayloadLockedDocument {
         value: string | FolderInterface;
       } | null);
   globalSlug?: string | null;
-  user:
-    | {
-        relationTo: 'users';
-        value: string | User;
-      }
-    | {
-        relationTo: 'service-accounts';
-        value: string | ServiceAccount;
-      };
+  user: {
+    relationTo: 'users';
+    value: string | User;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -838,15 +791,10 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: string;
-  user:
-    | {
-        relationTo: 'users';
-        value: string | User;
-      }
-    | {
-        relationTo: 'service-accounts';
-        value: string | ServiceAccount;
-      };
+  user: {
+    relationTo: 'users';
+    value: string | User;
+  };
   key?: string | null;
   value?:
     | {
@@ -993,11 +941,11 @@ export interface UsersSelect<T extends boolean = true> {
   firstName?: T;
   lastName?: T;
   role?: T;
-  permissions?:
+  allowedCollections?:
     | T
     | {
-        resource?: T;
-        accessLevel?: T;
+        collectionOrGroupSlug?: T;
+        permissions?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1027,25 +975,6 @@ export interface SampleSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "service-accounts_select".
- */
-export interface ServiceAccountsSelect<T extends boolean = true> {
-  name?: T;
-  permissions?:
-    | T
-    | {
-        resource?: T;
-        accessLevel?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  enableAPIKey?: T;
-  apiKey?: T;
-  apiKeyIndex?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1083,6 +1012,18 @@ export interface DurianpyWebsiteSigsSelect<T extends boolean = true> {
   icon?: T;
   title?: T;
   isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-partners_select".
+ */
+export interface DurianpyWebsitePartnersSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  websiteUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1530,6 +1471,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'durianpy-website-sigs';
           value: string | DurianpyWebsiteSig;
+        } | null)
+      | ({
+          relationTo: 'durianpy-website-partners';
+          value: string | DurianpyWebsitePartner;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

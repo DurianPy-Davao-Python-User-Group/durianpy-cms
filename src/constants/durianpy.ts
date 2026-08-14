@@ -21,6 +21,7 @@ export const DURIANPY_WEBSITE_COLLECTIONS = {
   DURIANPY_WEBSITE_EVENTS: 'durianpy-website-events',
   DURIANPY_WEBSITE_SPONSORS: 'durianpy-website-sponsors',
   DURIANPY_WEBSITE_SIGS: 'durianpy-website-sigs',
+  DURIANPY_WEBSITE_PARTNERS: 'durianpy-website-partners',
 } as const
 
 export type DurianpyWebsiteCollectionSlug =
@@ -41,6 +42,10 @@ export const DURIANPY_WEBSITE_COLLECTIONS_LABELS: Record<
   [DURIANPY_WEBSITE_COLLECTIONS.DURIANPY_WEBSITE_SIGS]: {
     singular: 'SIG',
     plural: 'SIGs',
+  },
+  [DURIANPY_WEBSITE_COLLECTIONS.DURIANPY_WEBSITE_PARTNERS]: {
+    singular: 'Partner',
+    plural: 'Partners',
   },
 }
 
