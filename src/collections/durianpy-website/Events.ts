@@ -1,12 +1,8 @@
-import { checkResourceAccess } from '@/access/checkResourceAccess'
-import { AccessType } from '@/constants/accessTypes'
+import { createCollectionAccess } from '@/access/checkResourceAccess'
 import { COLLECTION_LABELS, COLLECTIONS } from '@/constants/collections'
 import { SIDEBAR_GROUPS, getSidebarGroupLabel } from '@/constants/sidebarGroup'
-import type { AccessArgs, CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 import type { CollectionBeforeChangeHook } from 'payload'
-
-const checkEventsAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkResourceAccess(access, COLLECTIONS.DURIANPY_WEBSITE_EVENTS, accessType)
 
 const ensureSingleFeatured: CollectionBeforeChangeHook = async ({ data, req, originalDoc }) => {
   if (data.isFeatured && data._status === 'published') {
@@ -37,16 +33,7 @@ const ensureSingleFeatured: CollectionBeforeChangeHook = async ({ data, req, ori
 export const Events: CollectionConfig = {
   slug: COLLECTIONS.DURIANPY_WEBSITE_EVENTS,
   labels: COLLECTION_LABELS[COLLECTIONS.DURIANPY_WEBSITE_EVENTS],
-  access: {
-    admin: checkEventsAccess('admin'),
-    create: checkEventsAccess('create'),
-    delete: checkEventsAccess('delete'),
-    read: ({ req }) => {
-      if (req.user) return true
-      return { _status: { equals: 'published' } }
-    },
-    update: checkEventsAccess('update'),
-  },
+  access: createCollectionAccess(COLLECTIONS.DURIANPY_WEBSITE_EVENTS, true),
   admin: {
     defaultColumns: ['title', 'date', 'location', 'isFeatured'],
     group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),

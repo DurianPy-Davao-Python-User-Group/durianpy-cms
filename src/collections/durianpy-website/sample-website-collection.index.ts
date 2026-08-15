@@ -1,23 +1,12 @@
-import { anyone } from '@/access/anyone'
-import { checkResourceAccess } from '@/access/checkResourceAccess'
-import { AccessType } from '@/constants/accessTypes'
-import { COLLECTION_LABELS } from '@/constants/collections'
+import { createCollectionAccess } from '@/access/checkResourceAccess'
+import { COLLECTIONS, COLLECTION_LABELS } from '@/constants/collections'
 import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
-import type { AccessArgs, CollectionConfig } from 'payload'
-
-const checkSampleAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkResourceAccess(access, 'sample', accessType)
+import type { CollectionConfig } from 'payload'
 
 export const Sample: CollectionConfig = {
   slug: 'sample',
   labels: COLLECTION_LABELS.sample,
-  access: {
-    admin: checkSampleAccess('admin'),
-    create: checkSampleAccess('create'),
-    delete: checkSampleAccess('delete'),
-    read: anyone,
-    update: checkSampleAccess('update'),
-  },
+  access: createCollectionAccess(COLLECTIONS.SAMPLE, true),
 
   admin: {
     defaultColumns: ['firstName'],

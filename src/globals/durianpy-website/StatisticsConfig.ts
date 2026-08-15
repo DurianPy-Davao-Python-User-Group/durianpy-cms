@@ -1,12 +1,7 @@
-import { GlobalConfig, AccessArgs } from 'payload'
-import { checkResourceAccess } from '@/access/checkResourceAccess'
+import { GlobalConfig } from 'payload'
+import { createGlobalAccess } from '@/access/checkResourceAccess'
 import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
 import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
-
-type AccessType = 'create' | 'read' | 'update' | 'delete'
-
-const checkStatisticsConfigAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkResourceAccess(access, GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG, accessType)
 
 export const StatisticsConfig: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG,
@@ -17,10 +12,7 @@ export const StatisticsConfig: GlobalConfig = {
   versions: {
     drafts: true,
   },
-  access: {
-    read: () => true,
-    update: checkStatisticsConfigAccess('update'),
-  },
+  access: createGlobalAccess(GLOBALS.DURIANPY_WEBSITE_STATISTICS_CONFIG, true),
   fields: [
     {
       name: 'metrics',

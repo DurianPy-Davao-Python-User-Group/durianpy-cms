@@ -1,12 +1,7 @@
-import { GlobalConfig, AccessArgs } from 'payload'
-import { checkResourceAccess } from '@/access/checkResourceAccess'
+import { GlobalConfig } from 'payload'
+import { createGlobalAccess } from '@/access/checkResourceAccess'
 import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
 import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
-
-type AccessType = 'create' | 'read' | 'update' | 'delete'
-
-const checkHomepageConfigAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkResourceAccess(access, GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG, accessType)
 
 export const HomepageConfig: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG,
@@ -17,10 +12,7 @@ export const HomepageConfig: GlobalConfig = {
   versions: {
     drafts: true,
   },
-  access: {
-    read: () => true,
-    update: checkHomepageConfigAccess('update'),
-  },
+  access: createGlobalAccess(GLOBALS.DURIANPY_WEBSITE_HOMEPAGE_CONFIG, true),
 
   fields: [
     {
