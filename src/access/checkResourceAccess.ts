@@ -1,4 +1,4 @@
-import type { AccessArgs } from 'payload'
+import type { AccessArgs, Where, CollectionConfig, GlobalConfig } from 'payload'
 import type { User } from '@/payload-types'
 import { anyAdmin } from './anyAdmin'
 import { AccessType, getSlugType } from '@/constants/accessTypes'
@@ -48,3 +48,49 @@ export function checkResourceAccess(
     return false
   })
 }
+
+/**
+ * Verifies read access for a resource and enforces draft visibility rules.
+ * Service accounts can only access drafts if they are also granted write (update) access.
+ */
+export function checkReadAccess(
+  accessArgs: AccessArgs<User>,
+  resourceSlug: CollectionSlug | GlobalSlug,
+  hasDrafts: boolean = false,
+): boolean | Where {
+  const hasRead = checkResourceAccess(accessArgs, resourceSlug, 'read')
+  if (!hasRead) return false
+
+  if (hasDrafts) {
+    const hasUpdate = checkResourceAccess(accessArgs, resourceSlug, 'update')
+    if (hasUpdate) return true
+    return { _status: { equals: 'published' } }
+  }
+
+  return true
+}
+
+/**
+ * Factory function to create standard access control methods for a Collection.
+ */
+export const createCollectionAccess = (
+  resourceSlug: CollectionSlug,
+  hasDrafts = false,
+): CollectionConfig['access'] => ({
+  admin: (access) => checkResourceAccess(access, resourceSlug, 'admin') as boolean,
+  create: (access) => checkResourceAccess(access, resourceSlug, 'create') as boolean,
+  delete: (access) => checkResourceAccess(access, resourceSlug, 'delete') as boolean,
+  read: (access) => checkReadAccess(access, resourceSlug, hasDrafts),
+  update: (access) => checkResourceAccess(access, resourceSlug, 'update') as boolean,
+})
+
+/**
+ * Factory function to create standard access control methods for a Global.
+ */
+export const createGlobalAccess = (
+  resourceSlug: GlobalSlug,
+  hasDrafts = false,
+): GlobalConfig['access'] => ({
+  read: (access) => checkReadAccess(access, resourceSlug, hasDrafts),
+  update: (access) => checkResourceAccess(access, resourceSlug, 'update') as boolean,
+})

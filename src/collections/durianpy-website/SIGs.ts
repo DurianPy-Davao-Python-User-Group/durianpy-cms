@@ -1,23 +1,12 @@
-import { anyone } from '@/access/anyone'
-import { checkResourceAccess } from '@/access/checkResourceAccess'
-import { AccessType } from '@/constants/accessTypes'
+import { createCollectionAccess } from '@/access/checkResourceAccess'
 import { COLLECTION_LABELS, COLLECTIONS } from '@/constants/collections'
 import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
-import type { AccessArgs, CollectionConfig } from 'payload'
-
-const checkSIGsAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkResourceAccess(access, COLLECTIONS.DURIANPY_WEBSITE_SIGS, accessType)
+import type { CollectionConfig } from 'payload'
 
 export const SIGs: CollectionConfig = {
   slug: COLLECTIONS.DURIANPY_WEBSITE_SIGS,
   labels: COLLECTION_LABELS[COLLECTIONS.DURIANPY_WEBSITE_SIGS],
-  access: {
-    admin: checkSIGsAccess('admin'),
-    create: checkSIGsAccess('create'),
-    delete: checkSIGsAccess('delete'),
-    read: anyone,
-    update: checkSIGsAccess('update'),
-  },
+  access: createCollectionAccess(COLLECTIONS.DURIANPY_WEBSITE_SIGS, true),
 
   admin: {
     defaultColumns: ['title', 'icon', 'isActive', 'createdAt'],

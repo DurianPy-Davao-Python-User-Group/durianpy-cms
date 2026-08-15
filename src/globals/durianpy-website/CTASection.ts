@@ -1,13 +1,8 @@
-import { AccessArgs, GlobalConfig } from 'payload'
+import { GlobalConfig } from 'payload'
 
-import { checkResourceAccess } from '@/access/checkResourceAccess'
-import { anyone } from '@/access/anyone'
-import { AccessType } from '@/constants/accessTypes'
+import { createGlobalAccess } from '@/access/checkResourceAccess'
 import { GLOBAL_LABELS, GLOBALS } from '@/constants/globals'
 import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
-
-const checkCTASectionAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkResourceAccess(access, GLOBALS.DURIANPY_WEBSITE_CTA_SECTION, accessType)
 
 export const CTASection: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_CTA_SECTION,
@@ -17,10 +12,7 @@ export const CTASection: GlobalConfig = {
     group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
 
-  access: {
-    read: anyone,
-    update: checkCTASectionAccess('update'),
-  },
+  access: createGlobalAccess(GLOBALS.DURIANPY_WEBSITE_CTA_SECTION, true),
 
   versions: {
     drafts: true,

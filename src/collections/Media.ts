@@ -8,7 +8,8 @@ import {
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { anyone } from '../access/anyone'
+import { createCollectionAccess } from '@/access/checkResourceAccess'
+import { COLLECTIONS } from '@/constants/collections'
 import { authenticated } from '../access/authenticated'
 
 const filename = fileURLToPath(import.meta.url)
@@ -18,12 +19,12 @@ const isProduction =
   process.env.NODE_ENV === 'production' || process.env.ENVIRONMENT === 'production'
 
 export const Media: CollectionConfig = {
-  slug: 'media',
+  slug: COLLECTIONS.MEDIA,
   folders: true,
   access: {
+    ...createCollectionAccess(COLLECTIONS.MEDIA, false),
     create: authenticated,
     delete: authenticated,
-    read: anyone,
     update: authenticated,
   },
   fields: [
