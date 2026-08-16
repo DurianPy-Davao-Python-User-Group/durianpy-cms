@@ -244,6 +244,10 @@ hooks: {
 
 ## Access Control
 
+### Resource Access Checking
+
+ALWAYS utilize `src/access/checkResourceAccess.ts` for resource access checking. The only exception is for specific resources (like `users` or service accounts) where it is strictly for admins to create. For all other resources, you must use `checkResourceAccess.ts`.
+
 ### Collection-Level Access
 
 ```typescript
@@ -1019,6 +1023,7 @@ export const myPlugin =
 3. Extract hooks to `hooks/` directory
 4. Use reusable field factories for common patterns
 5. Document complex access control with comments
+6. Always write seed functions after creating a new resource
 
 ## Common Gotchas
 
