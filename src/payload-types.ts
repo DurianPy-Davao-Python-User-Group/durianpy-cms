@@ -422,6 +422,7 @@ export interface DurianpyWebsitePartner {
   name: string;
   logo: string | Media;
   websiteUrl?: string | null;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1024,6 +1025,7 @@ export interface DurianpyWebsitePartnersSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
   websiteUrl?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

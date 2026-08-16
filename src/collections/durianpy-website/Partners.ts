@@ -46,5 +46,9 @@ export const Partners: CollectionConfig = {
         }
       },
     },
+    {
+      name: 'description',
+      type: 'textarea',
+    },
   ],
 }
