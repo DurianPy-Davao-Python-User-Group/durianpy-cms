@@ -1,6 +1,6 @@
-import { COLLECTION_LABELS, COLLECTIONS, CollectionSlug } from './collections'
+import { COLLECTIONS, CollectionSlug } from './collections'
 import { DURIANPY_WEBSITE_ITEMS } from './durianpy'
-import { GLOBALS, GlobalSlug } from './globals'
+import { GlobalSlug } from './globals'
 
 /**
  * The enum for collection groups. Collections are usually grouped by project/website.
