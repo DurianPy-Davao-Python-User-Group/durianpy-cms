@@ -9,7 +9,7 @@ import { getSidebarGroupItems, SidebarGroupSlug } from '@/constants/sidebarGroup
 
 export function checkResourceAccess(
   { req }: AccessArgs<User>,
-  resourceSlug: CollectionSlug | GlobalSlug,
+  resourceSlug: CollectionSlug | SidebarGroupSlug | GlobalSlug,
   accessType?: AccessType,
 ) {
   const user = req.user
