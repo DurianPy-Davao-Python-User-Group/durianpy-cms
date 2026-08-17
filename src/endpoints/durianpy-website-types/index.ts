@@ -1,12 +1,10 @@
 import fs from 'fs'
 import path from 'path'
-import { COLLECTION_GROUPS } from '@/constants/collections'
+import { SIDEBAR_GROUPS, getSidebarGroupItems } from '@/constants/sidebarGroup'
 
 import type { Endpoint } from 'payload'
 
-import { getCollectionGroupItems } from '@/constants/collections'
-
-const GROUP_SLUG = COLLECTION_GROUPS.DURIANPY_WEBSITE
+const GROUP_SLUG = SIDEBAR_GROUPS.DURIANPY_WEBSITE
 
 function getCommentStartBefore(content: string, index: number): number {
   const commentEnd = content.lastIndexOf('*/', index)
@@ -76,7 +74,7 @@ export const durianpyWebsiteTypesEndpoint: Endpoint = {
         'utf-8',
       )
 
-      const groupCollectionSlugs = [...getCollectionGroupItems(GROUP_SLUG)].sort((a, b) =>
+      const groupCollectionSlugs = [...getSidebarGroupItems(GROUP_SLUG)].sort((a, b) =>
         a.localeCompare(b),
       )
 

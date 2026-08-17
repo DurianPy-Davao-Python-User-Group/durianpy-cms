@@ -1,6 +1,6 @@
 import { getPayload, Payload } from 'payload'
 import config from '@/payload.config'
-import { GET as getDurianTypes } from '@/app/(payload)/api/durianpy-website-types/route'
+import { durianpyWebsiteTypesEndpoint } from '@/endpoints/durianpy-website-types'
 
 import { describe, it, beforeAll, expect } from 'vitest'
 
@@ -20,7 +20,7 @@ describe('API', () => {
   })
 
   it('returns only durianpy-website collection interfaces', async () => {
-    const response = await getDurianTypes()
+    const response = await (durianpyWebsiteTypesEndpoint.handler as () => Promise<Response>)()
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('text/plain')
