@@ -2,6 +2,13 @@ import { Payload, PayloadRequest } from 'payload'
 import { COLLECTIONS } from '@/constants/collections'
 
 export async function seedEvents({ payload, req }: { payload: Payload; req?: PayloadRequest }) {
+  const { docs: mediaDocs } = await payload.find({
+    collection: COLLECTIONS.MEDIA,
+    limit: 1,
+    req,
+  })
+  const mediaId = mediaDocs[0]?.id
+
   const events = [
     {
       title: 'DurianPy Davao Meetup 2025',
@@ -9,6 +16,7 @@ export async function seedEvents({ payload, req }: { payload: Payload; req?: Pay
       location: 'Davao City, Philippines',
       registrationLink: 'https://example.com/register/durianpy-meetup',
       isFeatured: true,
+      coverImage: mediaId,
       _status: 'published',
     },
     {
@@ -17,6 +25,7 @@ export async function seedEvents({ payload, req }: { payload: Payload; req?: Pay
       location: 'Virtual',
       registrationLink: 'https://example.com/register/python-web',
       isFeatured: false,
+      coverImage: mediaId,
       _status: 'published',
     },
   ] as const
