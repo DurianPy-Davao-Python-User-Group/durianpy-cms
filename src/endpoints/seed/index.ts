@@ -3,6 +3,7 @@ import type { CollectionSlug, Payload, PayloadRequest } from 'payload'
 import { seedUsers } from '../../seed/admin/collections/Users'
 import { seedServiceAccounts } from '../../seed/admin/collections/ServiceAccounts'
 import { seedCategories } from '../../seed/default/collections/Categories'
+import { seedMedia } from '../../seed/default/collections/Media'
 import { seedEvents } from '../../seed/durianpy-website/collections/Events'
 import { seedSIGs } from '../../seed/durianpy-website/collections/SIGs'
 import { seedSponsors } from '../../seed/durianpy-website/collections/Sponsors'
@@ -41,16 +42,16 @@ export const seed = async ({
   await Promise.all(
     collections.map((collection) => {
       if (collection === 'users') {
-        return
+        return Promise.resolve()
       }
 
-      payload.db.deleteMany({ collection, req, where: {} })
+      return payload.db.deleteMany({ collection, req, where: {} })
     }),
   )
 
   await Promise.all(
     collections
-      .filter((collection) => Boolean(payload.collections[collection].config.versions))
+      .filter((collection) => Boolean(payload.collections[collection]?.config?.versions))
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
@@ -59,6 +60,7 @@ export const seed = async ({
   await seedServiceAccounts({ payload, req })
 
   payload.logger.info(`— Seeding Default...`)
+  await seedMedia({ payload, req })
   await seedCategories({ payload, req })
 
   payload.logger.info(`— Seeding DurianPy Website Collections...`)
