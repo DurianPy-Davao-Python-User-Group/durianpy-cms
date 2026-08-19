@@ -1,8 +1,9 @@
 import fs from 'fs'
 import path from 'path'
+import { checkResourceAccess } from '@/access/checkResourceAccess'
 import { SIDEBAR_GROUPS, getSidebarGroupItems } from '@/constants/sidebarGroup'
 
-import type { Endpoint } from 'payload'
+import { APIError, type Endpoint } from 'payload'
 
 const GROUP_SLUG = SIDEBAR_GROUPS.DURIANPY_WEBSITE
 
@@ -43,23 +44,25 @@ function extractInterfaceBlock(content: string, interfaceName: string): string |
   return null
 }
 
-function getCollectionTypeMapFromConfig(typesFileContent: string): Map<string, string> {
+function getTypeMapFromConfig(typesFileContent: string): Map<string, string> {
   const map = new Map<string, string>()
-  const collectionsBlockMatch = typesFileContent.match(/collections:\s*\{([\s\S]*?)\n\s*\};/)
 
-  if (!collectionsBlockMatch) return map
-
-  const collectionsBlock = collectionsBlockMatch[1]
-  const collectionEntryRegex = /^\s*(?:'([^']+)'|([A-Za-z0-9_-]+)):\s*([A-Za-z0-9_]+);\s*$/gm
-
-  let entryMatch: RegExpExecArray | null
-  while ((entryMatch = collectionEntryRegex.exec(collectionsBlock)) !== null) {
-    const slug = entryMatch[1] ?? entryMatch[2]
-    const typeName = entryMatch[3]
-
-    if (!slug || !typeName) continue
-    map.set(slug, typeName)
+  const extractEntriesFromBlock = (blockMatch: RegExpMatchArray | null) => {
+    if (!blockMatch) return
+    const blockContent = blockMatch[1]
+    const entryRegex = /^\s*(?:'([^']+)'|([A-Za-z0-9_-]+)):\s*([A-Za-z0-9_]+);\s*$/gm
+    let entryMatch: RegExpExecArray | null
+    while ((entryMatch = entryRegex.exec(blockContent)) !== null) {
+      const slug = entryMatch[1] ?? entryMatch[2]
+      const typeName = entryMatch[3]
+      if (slug && typeName) {
+        map.set(slug, typeName)
+      }
+    }
   }
+
+  extractEntriesFromBlock(typesFileContent.match(/collections:\s*\{([\s\S]*?)\n\s*\};/))
+  extractEntriesFromBlock(typesFileContent.match(/globals:\s*\{([\s\S]*?)\n\s*\};/))
 
   return map
 }
@@ -67,23 +70,37 @@ function getCollectionTypeMapFromConfig(typesFileContent: string): Map<string, s
 export const durianpyWebsiteTypesEndpoint: Endpoint = {
   method: 'get',
   path: '/durianpy-website-types',
-  handler: async () => {
+  handler: async (req) => {
+    if (!req.user && req.payload) {
+      const { user } = await req.payload.auth({ headers: req.headers })
+      req.user = user
+    }
+
+    if (!req.user) {
+      throw new APIError('Unauthorized', 401)
+    }
+
+    const hasAccess = checkResourceAccess({ req }, GROUP_SLUG, 'read')
+    if (!hasAccess) {
+      throw new APIError('Forbidden', 403)
+    }
+
     try {
       const fullTypes = fs.readFileSync(
         path.resolve(process.cwd(), 'src/payload-types.ts'),
         'utf-8',
       )
 
-      const groupCollectionSlugs = [...getSidebarGroupItems(GROUP_SLUG)].sort((a, b) =>
+      const groupResourceSlugs = [...getSidebarGroupItems(GROUP_SLUG)].sort((a, b) =>
         a.localeCompare(b),
       )
 
-      const collectionTypeMap = getCollectionTypeMapFromConfig(fullTypes)
+      const resourceTypeMap = getTypeMapFromConfig(fullTypes)
 
       const missingTypeMappings: string[] = []
-      const selectedTypeNames = groupCollectionSlugs
+      const selectedTypeNames = groupResourceSlugs
         .map((slug) => {
-          const typeName = collectionTypeMap.get(slug)
+          const typeName = resourceTypeMap.get(slug)
           if (!typeName) missingTypeMappings.push(slug)
           return typeName
         })
@@ -92,9 +109,9 @@ export const durianpyWebsiteTypesEndpoint: Endpoint = {
       if (missingTypeMappings.length > 0) {
         return new Response(
           JSON.stringify({
-            error: 'Missing collection to type mappings in payload-types.ts',
+            error: 'Missing resource to type mappings in payload-types.ts',
             group: GROUP_SLUG,
-            missingCollectionSlugs: missingTypeMappings,
+            missingResourceSlugs: missingTypeMappings,
           }),
           {
             status: 500,
@@ -126,7 +143,7 @@ export const durianpyWebsiteTypesEndpoint: Endpoint = {
         )
       }
 
-      const typeSyncHeader = `// Auto-generated from src/payload-types.ts\n// Group: ${GROUP_SLUG}\n// Collections: ${groupCollectionSlugs.join(', ')}`
+      const typeSyncHeader = `// Auto-generated from src/payload-types.ts\n// Group: ${GROUP_SLUG}\n// Resources: ${groupResourceSlugs.join(', ')}`
       const payload = `${typeSyncHeader}\n\n${extractedInterfaces.join('\n\n')}`
 
       return new Response(payload, {
@@ -136,15 +153,14 @@ export const durianpyWebsiteTypesEndpoint: Endpoint = {
         },
       })
     } catch (error) {
-      return new Response(
-        JSON.stringify({
-          error: 'Failed to generate durianpy-website type sync payload',
-          message: error instanceof Error ? error.message : 'Unknown error',
-        }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        },
+      if (error instanceof APIError) {
+        throw error
+      }
+      throw new APIError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to generate durianpy-website type sync payload',
+        500,
       )
     }
   },

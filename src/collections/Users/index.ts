@@ -33,8 +33,9 @@ export const Users: CollectionConfig = {
   },
   access: {
     admin: ({ req: { user } }) => {
+      if (!user || !('role' in user) || !user.role) return false
       const allowedRoles = Object.values(USER_ROLES)
-      return Boolean(user && user.role.some((role) => allowedRoles.includes(role)))
+      return Boolean(user.role.some((r) => allowedRoles.includes(r)))
     },
     create: anyAdmin,
     delete: anyAdmin,
@@ -48,7 +49,7 @@ export const Users: CollectionConfig = {
     defaultColumns: ['email'],
     useAsTitle: 'email',
     hidden({ user }) {
-      if (!user) return true
+      if (!user || !('role' in user) || !user.role) return true
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
     group: getSidebarGroupLabel(SIDEBAR_GROUPS.ADMIN),

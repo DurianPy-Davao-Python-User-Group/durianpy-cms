@@ -19,8 +19,15 @@ describe('API', () => {
     expect(users).toBeDefined()
   })
 
-  it('returns only durianpy-website collection interfaces', async () => {
-    const response = await (durianpyWebsiteTypesEndpoint.handler as () => Promise<Response>)()
+  it('returns only durianpy-website collection interfaces when authorized via admin role', async () => {
+    const mockReq = {
+      user: {
+        role: ['admin'],
+      },
+    }
+    const response = await (
+      durianpyWebsiteTypesEndpoint.handler as (req: unknown) => Promise<Response>
+    )(mockReq)
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('text/plain')
@@ -35,5 +42,42 @@ describe('API', () => {
     // Ensure non-group collections are excluded.
     expect(body).not.toContain('export interface Media')
     expect(body).not.toContain('export interface Category')
+  })
+
+  it('returns only durianpy-website collection interfaces when authorized via group read permission', async () => {
+    const mockReq = {
+      user: {
+        permissions: [
+          {
+            resource: 'durianpy-website',
+            accessLevel: 'read',
+          },
+        ],
+      },
+    }
+    const response = await (
+      durianpyWebsiteTypesEndpoint.handler as (req: unknown) => Promise<Response>
+    )(mockReq)
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('content-type')).toContain('text/plain')
+  })
+
+  it('rejects unauthenticated access to website collection interfaces', async () => {
+    const unauthReq = {}
+    await expect(
+      (durianpyWebsiteTypesEndpoint.handler as (req: unknown) => Promise<Response>)(unauthReq),
+    ).rejects.toThrow('Unauthorized')
+  })
+
+  it('rejects forbidden access when user lacks read permission on website group', async () => {
+    const forbiddenReq = {
+      user: {
+        permissions: [],
+      },
+    }
+    await expect(
+      (durianpyWebsiteTypesEndpoint.handler as (req: unknown) => Promise<Response>)(forbiddenReq),
+    ).rejects.toThrow('Forbidden')
   })
 })

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { anyAdmin } from '@/access/anyAdmin'
-import { USER_ROLE_LABELS, USER_ROLES } from '@/constants/userRoles'
+import { USER_ROLES } from '@/constants/userRoles'
 import { COLLECTIONS, COLLECTION_LABELS } from '@/constants/collections'
 import { adminOrSelf } from '@/access/adminOrSelf'
 import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
@@ -21,10 +21,10 @@ export const ServiceAccounts: CollectionConfig = {
     update: adminOrSelf,
   },
   admin: {
-    defaultColumns: ['name', 'email', 'createdAt'],
+    defaultColumns: ['name', 'createdAt'],
     useAsTitle: 'name',
     hidden({ user }) {
-      if (!user) return true
+      if (!user || !user.role) return true
       return !user.role.includes(USER_ROLES.SUPER_ADMIN) && !user.role.includes(USER_ROLES.ADMIN)
     },
     group: getSidebarGroupLabel(SIDEBAR_GROUPS.ADMIN),
@@ -39,21 +39,6 @@ export const ServiceAccounts: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Service Account Name',
-    },
-    {
-      name: 'role',
-      type: 'select',
-      required: true,
-      saveToJWT: true,
-      hasMany: true,
-      access: {
-        create: ({ req }) => anyAdmin({ req }),
-        update: ({ req }) => anyAdmin({ req }),
-      },
-      options: Object.values(USER_ROLES).map((value) => ({
-        value,
-        label: USER_ROLE_LABELS[value],
-      })),
     },
     {
       name: 'permissions',
