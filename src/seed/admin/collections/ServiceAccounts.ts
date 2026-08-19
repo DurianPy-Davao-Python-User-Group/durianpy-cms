@@ -1,6 +1,7 @@
 import { Payload, PayloadRequest } from 'payload'
 import { COLLECTIONS } from '@/constants/collections'
-import { USER_ROLES } from '@/constants/userRoles'
+import { PERMISSIONS } from '@/constants/permissions'
+import { SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
 
 export async function seedServiceAccounts({
   payload,
@@ -12,12 +13,22 @@ export async function seedServiceAccounts({
   const serviceAccounts = [
     {
       name: 'GitHub Actions Bot',
-      role: [USER_ROLES.SUPER_ADMIN],
+      permissions: [
+        {
+          resource: SIDEBAR_GROUPS.ADMIN,
+          accessLevel: PERMISSIONS.FULL_ACCESS,
+        },
+      ],
       enableAPIKey: true,
     },
     {
       name: 'Integration Service',
-      role: [USER_ROLES.ADMIN],
+      permissions: [
+        {
+          resource: SIDEBAR_GROUPS.DURIANPY_WEBSITE,
+          accessLevel: PERMISSIONS.READ,
+        },
+      ],
       enableAPIKey: true,
     },
   ]

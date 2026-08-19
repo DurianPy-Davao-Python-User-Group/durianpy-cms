@@ -390,7 +390,6 @@ export interface Sample {
 export interface ServiceAccount {
   id: string;
   name: string;
-  role: ('super-admin' | 'admin' | 'writer' | 'reader')[];
   permissions?:
     | {
         resource:
@@ -1035,7 +1034,6 @@ export interface SampleSelect<T extends boolean = true> {
  */
 export interface ServiceAccountsSelect<T extends boolean = true> {
   name?: T;
-  role?: T;
   permissions?:
     | T
     | {

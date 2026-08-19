@@ -35,7 +35,8 @@ export function checkResourceAccess(
 
     if (slugType === 'group') {
       const groupItems = getSidebarGroupItems(assignedSlug as SidebarGroupSlug)
-      isApplicable = groupItems.includes(resourceSlug as CollectionSlug)
+      isApplicable =
+        groupItems.includes(resourceSlug as CollectionSlug) || assignedSlug === resourceSlug
     } else if (slugType === 'collection') {
       isApplicable = assignedSlug === resourceSlug
     }

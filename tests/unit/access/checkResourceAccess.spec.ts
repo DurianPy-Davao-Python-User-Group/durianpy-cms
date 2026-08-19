@@ -90,6 +90,23 @@ describe('checkResourceAccess', () => {
       ).toBe(true)
     })
 
+    it('should return true if checking group-level access directly and permission grants the access type', () => {
+      vi.mocked(anyAdmin).mockReturnValue(false)
+      const args = {
+        req: {
+          user: {
+            id: 1,
+            permissions: [
+              { resource: SIDEBAR_GROUPS.DURIANPY_WEBSITE, accessLevel: PERMISSIONS.READ },
+            ],
+          },
+        },
+      } as unknown as AccessArgs<User>
+      expect(checkResourceAccess(args, SIDEBAR_GROUPS.DURIANPY_WEBSITE, ACCESS_TYPES.READ)).toBe(
+        true,
+      )
+    })
+
     it('should return false if group contains the resource but access level does not grant the access type', () => {
       vi.mocked(anyAdmin).mockReturnValue(false)
       const args = {

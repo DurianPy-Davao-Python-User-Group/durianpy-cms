@@ -6,5 +6,6 @@ import { USER_ROLES } from '@/constants/userRoles'
 type isAuthenticated = (args: AccessArgs<User>) => boolean
 
 export const admin: isAuthenticated = ({ req: { user } }) => {
-  return Boolean(user && user.role.includes(USER_ROLES.ADMIN))
+  if (!user || !('role' in user) || !user.role) return false
+  return Boolean(user.role.includes(USER_ROLES.ADMIN))
 }
