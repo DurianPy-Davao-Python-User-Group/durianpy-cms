@@ -8,6 +8,7 @@ import { seedEvents } from '../../seed/durianpy-website/collections/Events'
 import { seedSIGs } from '../../seed/durianpy-website/collections/SIGs'
 import { seedSponsors } from '../../seed/durianpy-website/collections/Sponsors'
 import { seedSample } from '../../seed/durianpy-website/collections/sample-website-collection.index'
+import { seedPartners } from '@/seed/durianpy-website/collections/Partners'
 
 import { seedCTASection } from '../../seed/durianpy-website/globals/CTASection'
 import { seedCarousel } from '../../seed/durianpy-website/globals/Carousel'
@@ -68,6 +69,7 @@ export const seed = async ({
   await seedSIGs({ payload, req })
   await seedSponsors({ payload, req })
   await seedSample({ payload, req })
+  await seedPartners({ payload, req })
 
   payload.logger.info(`— Seeding DurianPy Website Globals...`)
   await seedCTASection({ payload, req })

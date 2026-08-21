@@ -76,6 +76,7 @@ export interface Config {
     'durianpy-website-events': DurianpyWebsiteEvent;
     'durianpy-website-sponsors': DurianpyWebsiteSponsor;
     'durianpy-website-sigs': DurianpyWebsiteSig;
+    'durianpy-website-partners': DurianpyWebsitePartner;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -99,6 +100,7 @@ export interface Config {
     'durianpy-website-events': DurianpyWebsiteEventsSelect<false> | DurianpyWebsiteEventsSelect<true>;
     'durianpy-website-sponsors': DurianpyWebsiteSponsorsSelect<false> | DurianpyWebsiteSponsorsSelect<true>;
     'durianpy-website-sigs': DurianpyWebsiteSigsSelect<false> | DurianpyWebsiteSigsSelect<true>;
+    'durianpy-website-partners': DurianpyWebsitePartnersSelect<false> | DurianpyWebsitePartnersSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -347,7 +349,8 @@ export interface User {
           | 'service-accounts'
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
-          | 'durianpy-website-sigs';
+          | 'durianpy-website-sigs'
+          | 'durianpy-website-partners';
         accessLevel: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -407,7 +410,8 @@ export interface ServiceAccount {
           | 'service-accounts'
           | 'durianpy-website-events'
           | 'durianpy-website-sponsors'
-          | 'durianpy-website-sigs';
+          | 'durianpy-website-sigs'
+          | 'durianpy-website-partners';
         accessLevel: 'read' | 'read-write' | 'full-access';
         id?: string | null;
       }[]
@@ -464,6 +468,20 @@ export interface DurianpyWebsiteSig {
    * Uncheck to hide defunct SIGs without deleting data
    */
   isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-partners".
+ */
+export interface DurianpyWebsitePartner {
+  id: string;
+  name: string;
+  logo: string | Media;
+  websiteUrl?: string | null;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -808,6 +826,10 @@ export interface PayloadLockedDocument {
         value: string | DurianpyWebsiteSig;
       } | null)
     | ({
+        relationTo: 'durianpy-website-partners';
+        value: string | DurianpyWebsitePartner;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: string | Form;
       } | null)
@@ -1083,6 +1105,19 @@ export interface DurianpyWebsiteSigsSelect<T extends boolean = true> {
   icon?: T;
   title?: T;
   isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "durianpy-website-partners_select".
+ */
+export interface DurianpyWebsitePartnersSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  websiteUrl?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1530,6 +1565,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'durianpy-website-sigs';
           value: string | DurianpyWebsiteSig;
+        } | null)
+      | ({
+          relationTo: 'durianpy-website-partners';
+          value: string | DurianpyWebsitePartner;
         } | null);
     global?: string | null;
     user?: (string | null) | User;
