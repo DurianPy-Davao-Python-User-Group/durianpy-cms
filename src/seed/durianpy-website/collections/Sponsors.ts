@@ -15,6 +15,8 @@ export async function seedSponsors({ payload, req }: { payload: Payload; req?: P
       websiteUrl: 'https://techcorp.example.com',
       tier: 'gold',
       logo: mediaId,
+      banner: mediaId,
+      description: 'Leading technology solutions provider.',
       _status: 'published',
     },
     {
@@ -22,6 +24,8 @@ export async function seedSponsors({ payload, req }: { payload: Payload; req?: P
       websiteUrl: 'https://localdevs.example.com',
       tier: 'community',
       logo: mediaId,
+      banner: mediaId,
+      description: 'A community of local developers.',
       _status: 'published',
     },
   ] as const

@@ -28,7 +28,18 @@ export const Sponsors: CollectionConfig = {
       required: true,
     },
     {
+      name: 'banner',
+      type: 'upload',
+      relationTo: COLLECTIONS.MEDIA,
+      required: false,
+    },
+    {
       name: 'websiteUrl',
+      type: 'text',
+      required: false,
+    },
+    {
+      name: 'description',
       type: 'text',
       required: false,
     },
