@@ -15,6 +15,7 @@ import { seedCarousel } from '../../seed/durianpy-website/globals/Carousel'
 import { seedCodeOfConduct } from '../../seed/durianpy-website/globals/CodeOfConduct'
 import { seedHomepageConfig } from '../../seed/durianpy-website/globals/HomepageConfig'
 import { seedStatisticsConfig } from '../../seed/durianpy-website/globals/StatisticsConfig'
+import { seedOrganizationStatus } from '../../seed/durianpy-website/globals/OrganizationStatus'
 
 import { COLLECTIONS } from '@/constants/collections'
 
@@ -77,6 +78,7 @@ export const seed = async ({
   await seedCodeOfConduct({ payload, req })
   await seedHomepageConfig({ payload, req })
   await seedStatisticsConfig({ payload, req })
+  await seedOrganizationStatus({ payload, req })
 
   payload.logger.info('Seeded database successfully!')
 }

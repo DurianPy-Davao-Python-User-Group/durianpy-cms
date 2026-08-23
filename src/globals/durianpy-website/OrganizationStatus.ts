@@ -1,31 +1,17 @@
-import { anyone } from '@/access/anyone'
-import { checkCollectionAccess } from '@/access/checkCollectionAccess'
-import { AccessType } from '@/constants/accessTypes'
-import { getCollectionGroupLabel } from '@/constants/collections'
+import { createGlobalAccess } from '@/access/checkResourceAccess'
 import { GLOBALS, GLOBAL_LABELS } from '@/constants/globals'
-import type { AccessArgs, GlobalConfig } from 'payload'
-
-const checkOrganizationStatusAccess = (accessType?: AccessType) => (access: AccessArgs) =>
-  checkCollectionAccess(access, GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS, accessType)
+import { getSidebarGroupLabel, SIDEBAR_GROUPS } from '@/constants/sidebarGroup'
+import type { GlobalConfig } from 'payload'
 
 export const OrganizationStatus: GlobalConfig = {
   slug: GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS,
-  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS].singular,
+  label: GLOBAL_LABELS[GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS],
 
   admin: {
-    group: getCollectionGroupLabel('durianpy-website'),
+    group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
 
-  access: {
-    read: (access: AccessArgs) => {
-      if ((access.req as any)?.draft) {
-        return checkOrganizationStatusAccess('read')(access)
-      }
-      return anyone(access)
-    },
-    readVersions: checkOrganizationStatusAccess('read'),
-    update: checkOrganizationStatusAccess('update'),
-  },
+  access: createGlobalAccess(GLOBALS.DURIANPY_WEBSITE_ORGANIZATION_STATUS, true),
 
   versions: {
     drafts: {
@@ -50,7 +36,7 @@ export const OrganizationStatus: GlobalConfig = {
       name: 'psfPartnerLogo',
       type: 'upload',
       relationTo: 'media',
-      validate: (value: unknown, { siblingData }: any) => {
+      validate: (value: unknown, { siblingData }: { siblingData?: Record<string, unknown> }) => {
         if (siblingData?.isPSFPartner && !value) {
           return 'PSF Partner Logo is required when PSF Partner is enabled.'
         }
