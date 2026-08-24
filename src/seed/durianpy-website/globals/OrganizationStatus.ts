@@ -1,5 +1,6 @@
 import { Payload, PayloadRequest } from 'payload'
 import { GLOBALS } from '@/constants/globals'
+import { COLLECTIONS } from '@/constants/collections'
 
 export async function seedOrganizationStatus({
   payload,
@@ -9,7 +10,7 @@ export async function seedOrganizationStatus({
   req?: PayloadRequest
 }) {
   const { docs: mediaDocs } = await payload.find({
-    collection: 'media',
+    collection: COLLECTIONS.MEDIA,
     limit: 1,
     req,
   })
