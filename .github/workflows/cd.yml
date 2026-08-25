@@ -75,20 +75,6 @@ jobs:
           DATABASE_URL: ${{ steps.ssm-param.outputs.DATABASE_URL }}
         run: npm run test:int
 
-      - name: Build Project
-        env:
-          ENVIRONMENT: 'production'
-          PAYLOAD_SECRET: ${{ steps.ssm-param.outputs.PAYLOAD_SECRET }}
-          DATABASE_URL: ${{ steps.ssm-param.outputs.DATABASE_URL }}
-          NEXT_PUBLIC_SERVER_URL: ${{ steps.ssm-param.outputs.NEXT_PUBLIC_SERVER_URL }}
-          CLOUDFRONT_DISTRIBUTION_DOMAIN: ${{ steps.ssm-param.outputs.CLOUDFRONT_DISTRIBUTION_DOMAIN }}
-        run: npm run build
-
-      - name: Sync Static Assets to S3
-        run: |
-          aws s3 sync .next/static s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/artifacts/_next/static --delete
-          aws s3 sync public s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/public --delete
-
       - name: Fetch Lambda Layer URL
         id: layer-url
         run: |
@@ -116,6 +102,16 @@ jobs:
             LAYER_URL=${{ steps.layer-url.outputs.url }}
             AWS_DEFAULT_REGION=ap-southeast-1
             ENVIRONMENT=production
+
+      - name: Sync Static Assets to S3
+        run: |
+          IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}"
+          CONTAINER_ID=$(docker create "$IMAGE_URI")
+          docker cp "$CONTAINER_ID":/app/.next/static .next/static
+          docker cp "$CONTAINER_ID":/app/public public
+          docker rm "$CONTAINER_ID"
+          aws s3 sync .next/static s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/artifacts/_next/static --delete
+          aws s3 sync public s3://${{ steps.ssm-param.outputs.S3_BUCKET }}/public --delete
 
       - name: Push Image
         if: success()
