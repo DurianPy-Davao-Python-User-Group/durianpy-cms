@@ -107,6 +107,7 @@ jobs:
         run: |
           IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/durianpy-cms-prod:${{ steps.version-bump.outputs.new_tag }}"
           CONTAINER_ID=$(docker create "$IMAGE_URI")
+          mkdir -p .next
           docker cp "$CONTAINER_ID":/app/.next/static .next/static
           docker cp "$CONTAINER_ID":/app/public public
           docker rm "$CONTAINER_ID"

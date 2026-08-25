@@ -25,20 +25,9 @@ fi
 
 echo "Selected bump type: $BUMP_TYPE"
 
-# 3. Find the latest released Git tag to base the bump on
-git fetch --tags
-LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-echo "Latest release tag: $LATEST_TAG"
-
-# Clean tag version (remove 'v' prefix)
-PREV_VERSION="${LATEST_TAG#v}"
-
-# Set package.json version to the latest tag version temporarily
-node -e "
-  const pkg = require('./package.json');
-  pkg.version = '$PREV_VERSION';
-  require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');
-"
+# 3. Read current version from package.json
+CURRENT_VERSION=$(node -p "require('./package.json').version")
+echo "Current package.json version: $CURRENT_VERSION"
 
 # 4. Bump version using npm
 NEW_VERSION=$(npm version "$BUMP_TYPE" --no-git-tag-version)
