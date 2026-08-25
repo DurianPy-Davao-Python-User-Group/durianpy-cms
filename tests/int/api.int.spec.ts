@@ -19,7 +19,7 @@ describe('API', () => {
     expect(users).toBeDefined()
   })
 
-  it('returns only durianpy-website collection interfaces when authorized via admin role', async () => {
+  it('returns only durianpy-website resource interfaces when authorized via admin role', async () => {
     const mockReq = {
       user: {
         role: ['admin'],
@@ -35,16 +35,18 @@ describe('API', () => {
     const body = await response.text()
 
     expect(body).toContain('Group: durianpy-website')
-    expect(body).toContain('Collections: sample, users')
-    expect(body).toContain('export interface Sample')
-    expect(body).toContain('export interface User')
+    expect(body).toContain('Resources: durianpy-website-carousel')
+    expect(body).toContain('export interface DurianpyWebsiteEvent')
+    expect(body).toContain('export interface DurianpyWebsiteHomepageConfig')
 
     // Ensure non-group collections are excluded.
     expect(body).not.toContain('export interface Media')
     expect(body).not.toContain('export interface Category')
+    expect(body).not.toContain('export interface Sample')
+    expect(body).not.toContain('export interface User')
   })
 
-  it('returns only durianpy-website collection interfaces when authorized via group read permission', async () => {
+  it('returns only durianpy-website resource interfaces when authorized via group read permission', async () => {
     const mockReq = {
       user: {
         permissions: [
