@@ -454,7 +454,7 @@ export interface DurianpyWebsiteSponsor {
   id: string;
   name: string;
   logo: string | Media;
-  banner?: (string | null) | Media;
+  logoMobile?: (string | null) | Media;
   websiteUrl?: string | null;
   description?: string | null;
   tier: 'gold' | 'silver' | 'venue' | 'community';
@@ -486,6 +486,7 @@ export interface DurianpyWebsitePartner {
   id: string;
   name: string;
   logo: string | Media;
+  logoMobile?: (string | null) | Media;
   websiteUrl?: string | null;
   description?: string | null;
   updatedAt: string;
@@ -1097,7 +1098,7 @@ export interface DurianpyWebsiteEventsSelect<T extends boolean = true> {
 export interface DurianpyWebsiteSponsorsSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
-  banner?: T;
+  logoMobile?: T;
   websiteUrl?: T;
   description?: T;
   tier?: T;
@@ -1124,6 +1125,7 @@ export interface DurianpyWebsiteSigsSelect<T extends boolean = true> {
 export interface DurianpyWebsitePartnersSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
+  logoMobile?: T;
   websiteUrl?: T;
   description?: T;
   updatedAt?: T;

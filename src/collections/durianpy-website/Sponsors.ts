@@ -9,7 +9,7 @@ export const Sponsors: CollectionConfig = {
   access: createCollectionAccess(COLLECTIONS.DURIANPY_WEBSITE_SPONSORS, true),
 
   admin: {
-    defaultColumns: ['name', 'logo', 'websiteUrl', 'tier'],
+    defaultColumns: ['name', 'logo', 'logoMobile', 'websiteUrl', 'tier'],
     group: getSidebarGroupLabel(SIDEBAR_GROUPS.DURIANPY_WEBSITE),
   },
   versions: {
@@ -28,7 +28,7 @@ export const Sponsors: CollectionConfig = {
       required: true,
     },
     {
-      name: 'banner',
+      name: 'logoMobile',
       type: 'upload',
       relationTo: COLLECTIONS.MEDIA,
       required: false,
