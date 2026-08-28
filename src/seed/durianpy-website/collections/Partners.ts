@@ -13,6 +13,7 @@ export async function seedPartners({ payload, req }: { payload: Payload; req?: P
     {
       name: 'AWS User Group Davao',
       logo: mediaId,
+      logoMobile: mediaId,
       websiteUrl: 'https://awsugdavao.ph/',
       description: 'A community of AWS enthusiasts, cloud practitioners, and developers in Davao.',
       _status: 'published',
@@ -20,6 +21,7 @@ export async function seedPartners({ payload, req }: { payload: Payload; req?: P
     {
       name: 'Python Software Foundation',
       logo: mediaId,
+      logoMobile: mediaId,
       websiteUrl: 'https://www.python.org/psf',
       description: 'The organization behind the Python programming language.',
       _status: 'draft',

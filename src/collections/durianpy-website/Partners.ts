@@ -33,6 +33,12 @@ export const Partners: CollectionConfig = {
       required: true,
     },
     {
+      name: 'logoMobile',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
+    {
       name: 'websiteUrl',
       type: 'text',
       label: 'Website URL',
