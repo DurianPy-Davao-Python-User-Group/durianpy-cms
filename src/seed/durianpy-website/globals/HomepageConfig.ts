@@ -1,4 +1,5 @@
 import { Payload, PayloadRequest } from 'payload'
+import { COLLECTIONS } from '@/constants/collections'
 import { GLOBALS } from '@/constants/globals'
 
 export async function seedHomepageConfig({
@@ -9,7 +10,12 @@ export async function seedHomepageConfig({
   req?: PayloadRequest
 }) {
   const { docs: mediaDocs } = await payload.find({
-    collection: 'media',
+    collection: COLLECTIONS.MEDIA,
+    where: {
+      alt: {
+        equals: 'DurianPy Logo',
+      },
+    },
     limit: 1,
     req,
   })
@@ -20,9 +26,10 @@ export async function seedHomepageConfig({
     data: {
       heroImageDesktop: mediaId,
       heroImageMobile: mediaId,
-      heroTitle: 'Welcome to DurianPy',
-      heroSubtitle: 'The Python Community of Davao',
+      heroTitle: "Accelerating Davao's",
+      heroSubtitle: 'Tech Growth with Python',
       _status: 'published',
     },
+    req,
   })
 }
