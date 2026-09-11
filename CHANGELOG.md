@@ -1,3 +1,15 @@
+# Release v0.1.2 (2026-09-11)
+
+<!-- Release notes generated using configuration in .github/release.yml at release/production -->
+
+## What's Changed
+### 🏡 Other Changes
+* feat: update sponsors and partners to include mobile logo for integra… by @jlorion in https://github.com/DurianPy-Davao-Python-User-Group/durianpy-cms/pull/64
+* feat(seed): populate homepage config, carousel, cta action, and code of conduct by @alasdiel in https://github.com/DurianPy-Davao-Python-User-Group/durianpy-cms/pull/65
+
+
+**Full Changelog**: https://github.com/DurianPy-Davao-Python-User-Group/durianpy-cms/compare/v0.1.1...v0.1.2
+
 # Release v0.1.1 (2026-08-25)
 
 <!-- Release notes generated using configuration in .github/release.yml at release/production -->
